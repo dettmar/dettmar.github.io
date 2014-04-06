@@ -25,11 +25,17 @@ section .inner
 	display table-cell
 	vertical-align middle
 
+section .center
+	max-width 80%
+	margin 0 auto
+
 ::selection
-	background #ff0
+	background #000
+	color #fff
 
 ::-moz-selection
-	background #ff0
+	background #000
+	color #fff
 
 a
 	color #33f
@@ -52,9 +58,9 @@ h1, h2, h3, h4, h5, h6
 	font-weight normal
 
 h1
-	font-family 'Permanent Marker', cursive
-	font-size 200px
-	color #fff
+	font-family 'Permanent Marker'
+	font-size 120px
+	font-weight bold
 	-webkit-animation blink 5s alternate infinite
 
 h2
@@ -69,12 +75,19 @@ p
 
 ul
 	width 80%
-	font-size 100px
+	
 	margin 0 auto
 	list-style none
 
-li
-	padding 20px .2em 0
+	li
+		padding 20px .2em 0
+		
+		a
+			font-size 100px
+		
+		.details
+			padding-top 30px
+			display block
 
 
 /*
@@ -91,16 +104,21 @@ li
     100% color #fff
 }
 */
+/*
 .blink
     -webkit-animation blink 0.5s linear infinite
     -moz-animation blink 0.5s linear infinite
     animation blink 0.5s linear infinite
-
-
+*/
+.tags
+	font-size 30px
+	font-weight bold
+	line-height 60px
+	
 .peace
 	font-size 600px
 	font-family Arial, sans-serif
-	-webkit-animation blink 5s alternate infinite
+	//-webkit-animation blink 5s alternate infinite
 
 
 .icon

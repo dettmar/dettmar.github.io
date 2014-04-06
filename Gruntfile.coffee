@@ -6,7 +6,8 @@ module.exports = (grunt) ->
 			dev:
 				root: './'
 				port: 8080
-				
+				runInBackground: true
+				cache: 1
 		
 		watch:
 			scripts:
@@ -48,6 +49,6 @@ module.exports = (grunt) ->
 		'coffee'
 		'uglify'
 		'stylus'
-		'watch'
 		'http-server:dev'
+		'watch'
 	]
