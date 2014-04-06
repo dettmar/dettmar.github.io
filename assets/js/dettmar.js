@@ -1,5 +1,5 @@
 (function() {
-  alert("LOL");
+
 
 }).call(this);
 

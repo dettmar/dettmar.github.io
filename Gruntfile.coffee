@@ -1,7 +1,13 @@
 module.exports = (grunt) ->
 
 	@initConfig
-	
+		
+		'http-server':
+			dev:
+				root: './'
+				port: 8080
+				
+		
 		watch:
 			scripts:
 				files: 'assets/coffee/dettmar.coffee'
@@ -36,10 +42,12 @@ module.exports = (grunt) ->
 	@loadNpmTasks 'grunt-contrib-coffee'
 	@loadNpmTasks 'grunt-contrib-uglify'
 	@loadNpmTasks 'grunt-contrib-stylus'
+	@loadNpmTasks 'grunt-http-server'
 
 	@registerTask 'default', [
 		'coffee'
 		'uglify'
 		'stylus'
 		'watch'
+		'http-server:dev'
 	]
