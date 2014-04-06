@@ -32,8 +32,9 @@ class Background
 			@onLoad(obj)
 	
 	onLoad: (obj) ->
-	
-		@container = document.getElementById "duck"
+		
+		@container = document.getElementById "background"
+		
 		@camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000)
 		@scene = new THREE.Scene
 		
@@ -68,6 +69,7 @@ class Background
 		#
 		window.addEventListener "resize", @onWindowResize, false
 		@animate()
+		@container.classList.add "loaded"
 	
 	
 	onWindowResize: =>

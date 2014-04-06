@@ -46,7 +46,7 @@
 
     Background.prototype.onLoad = function(obj) {
       var directionalLight, lampor;
-      this.container = document.getElementById("duck");
+      this.container = document.getElementById("background");
       this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
       this.scene = new THREE.Scene;
       this.scene.add(obj);
@@ -72,7 +72,8 @@
       this.stats.domElement.style.top = "0px";
       this.container.appendChild(this.stats.domElement);
       window.addEventListener("resize", this.onWindowResize, false);
-      return this.animate();
+      this.animate();
+      return this.container.classList.add("loaded");
     };
 
     Background.prototype.onWindowResize = function() {
