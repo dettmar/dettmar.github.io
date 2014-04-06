@@ -3,8 +3,12 @@ module.exports = (grunt) ->
 	@initConfig
 	
 		watch:
-			files: 'assets/coffee/dettmar.coffee',
-			tasks: ['coffee', 'uglify']
+			scripts:
+				files: 'assets/coffee/dettmar.coffee'
+				tasks: ['coffee', 'uglify']
+			css:
+				files: 'assets/stylus/dettmar.styl'
+				tasks: ['stylus']
 		
 		coffee:
 			options:
@@ -22,12 +26,20 @@ module.exports = (grunt) ->
 				files:
 					'assets/js/dettmar.min.js': ['assets/js/dettmar.js']
 	
+		stylus:
+			compile:
+				files:
+					'assets/css/dettmar.css': 'assets/stylus/dettmar.styl'
+
+	
 	@loadNpmTasks 'grunt-contrib-watch'
 	@loadNpmTasks 'grunt-contrib-coffee'
 	@loadNpmTasks 'grunt-contrib-uglify'
+	@loadNpmTasks 'grunt-contrib-stylus'
 
 	@registerTask 'default', [
 		'coffee'
 		'uglify'
+		'stylus'
 		'watch'
 	]
