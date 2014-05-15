@@ -37,6 +37,8 @@ class CubesBackground
 			
 			@canvas.width = window.innerWidth * 2
 			@canvas.height = window.innerHeight * 2
+			@iso.originX = @canvas.width / 2;
+			@iso.originY = @canvas.height * 0.9;
 	
 	hide: =>
 
