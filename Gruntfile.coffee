@@ -5,14 +5,14 @@ module.exports = (grunt) ->
 		'http-server':
 			dev:
 				root: './'
-				port: 8080
+				port: 3000
 				runInBackground: true
 				cache: 1
 		
 		watch:
 			scripts:
-				files: 'assets/coffee/dettmar.coffee'
-				tasks: ['coffee', 'uglify']
+				files: ['assets/coffee/duck.coffee', 'assets/coffee/mobile.coffee']
+				tasks: ['coffee', 'uglify', 'concat']
 			css:
 				files: 'assets/stylus/dettmar.styl'
 				tasks: ['stylus']
@@ -22,16 +22,27 @@ module.exports = (grunt) ->
 				sourceMap: true
 			compile:
 				files:
-					'assets/js/dettmar.js': 'assets/coffee/dettmar.coffee'
+					'assets/js/duck.js': 'assets/coffee/duck.coffee'
+					'assets/js/cubes.js': 'assets/coffee/cubes.coffee'
 		
 		uglify:
 			options:
 				report: 'gzip'
 				sourceMap: true
-				sourceMapName: 'assets/js/dettmar.min.js.map'
+				sourceMapName: 'assets/js/duck.min.js.map'
 			my_target:
 				files:
-					'assets/js/dettmar.min.js': ['assets/js/dettmar.js']
+					'assets/js/duck.min.js': ['assets/js/duck.js']
+					'assets/js/cubes.min.js': ['assets/js/cubes.js']
+		
+		concat:
+			webgl:
+				src: ['assets/js/libs/three.js', 'assets/js/duck.min.js']
+				dest: 'assets/js/webgl.js'
+			mobile:
+				src: ['assets/js/libs/isomer.min.js', 'assets/js/cubes.min.js']
+				dest: 'assets/js/mobile.js'
+
 	
 		stylus:
 			compile:
@@ -39,6 +50,7 @@ module.exports = (grunt) ->
 					'assets/css/dettmar.css': 'assets/stylus/dettmar.styl'
 
 	
+	@loadNpmTasks 'grunt-contrib-concat'
 	@loadNpmTasks 'grunt-contrib-watch'
 	@loadNpmTasks 'grunt-contrib-coffee'
 	@loadNpmTasks 'grunt-contrib-uglify'
@@ -49,6 +61,7 @@ module.exports = (grunt) ->
 		'coffee'
 		'uglify'
 		'stylus'
+		'concat'
 		'http-server:dev'
 		'watch'
 	]

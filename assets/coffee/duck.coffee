@@ -3,7 +3,7 @@
 class Background
 	
 	container: undefined
-	stats: undefined
+
 	camera: undefined
 	scene: undefined
 	renderer: undefined
@@ -45,13 +45,13 @@ class Background
 		
 		# Lights
 		@scene.add new THREE.AmbientLight 0xffffff
-		lampor = 3
-		while lampor--
+		ambLights = 3
+		while ambLights--
 			directionalLight = new THREE.DirectionalLight(0xffffff) #Math.random() * 0xffffff
-			directionalLight.position.y = if lampor is 1 then 10 else -10
+			directionalLight.position.y = if ambLights is 1 then 10 else -10
 			#directionalLight.position.y = Math.random() - 0.5
-			directionalLight.position.x = if lampor is 2 then 10 else -10
-			directionalLight.position.z = if lampor is 1 then 10 else -10
+			directionalLight.position.x = if ambLights is 2 then 10 else -10
+			directionalLight.position.z = if ambLights is 1 then 10 else -10
 			directionalLight.position.normalize()
 			@scene.add directionalLight
 		#@pointLight = new THREE.PointLight(0xffffff, 4)
@@ -61,10 +61,6 @@ class Background
 		@renderer = new THREE.WebGLRenderer()
 		@renderer.setSize window.innerWidth, window.innerHeight
 		@container.appendChild @renderer.domElement
-		@stats = new Stats()
-		@stats.domElement.style.position = "absolute"
-		@stats.domElement.style.top = "0px"
-		@container.appendChild @stats.domElement
 		
 		#
 		window.addEventListener "resize", @onWindowResize, false
@@ -94,7 +90,6 @@ class Background
 			@skin.morphTargetInfluences[Math.floor(t * 30)] = 1
 			t += delta
 		@render()
-		@stats.update()
 
 
 	render: ->

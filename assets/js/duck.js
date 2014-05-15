@@ -5,8 +5,6 @@
   Background = (function() {
     Background.prototype.container = void 0;
 
-    Background.prototype.stats = void 0;
-
     Background.prototype.camera = void 0;
 
     Background.prototype.scene = void 0;
@@ -45,7 +43,7 @@
     };
 
     Background.prototype.onLoad = function(obj) {
-      var directionalLight, lampor;
+      var ambLights, directionalLight;
       this.container = document.getElementById("background");
       this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
       this.scene = new THREE.Scene;
@@ -54,12 +52,12 @@
         color: 0x000000
       }));
       this.scene.add(new THREE.AmbientLight(0xffffff));
-      lampor = 3;
-      while (lampor--) {
+      ambLights = 3;
+      while (ambLights--) {
         directionalLight = new THREE.DirectionalLight(0xffffff);
-        directionalLight.position.y = lampor === 1 ? 10 : -10;
-        directionalLight.position.x = lampor === 2 ? 10 : -10;
-        directionalLight.position.z = lampor === 1 ? 10 : -10;
+        directionalLight.position.y = ambLights === 1 ? 10 : -10;
+        directionalLight.position.x = ambLights === 2 ? 10 : -10;
+        directionalLight.position.z = ambLights === 1 ? 10 : -10;
         directionalLight.position.normalize();
         this.scene.add(directionalLight);
       }
@@ -67,10 +65,6 @@
       this.renderer = new THREE.WebGLRenderer();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.container.appendChild(this.renderer.domElement);
-      this.stats = new Stats();
-      this.stats.domElement.style.position = "absolute";
-      this.stats.domElement.style.top = "0px";
-      this.container.appendChild(this.stats.domElement);
       window.addEventListener("resize", this.onWindowResize, false);
       this.animate();
       return this.container.classList.add("loaded");
@@ -106,8 +100,7 @@
         this.skin.morphTargetInfluences[Math.floor(t * 30)] = 1;
         t += delta;
       }
-      this.render();
-      return this.stats.update();
+      return this.render();
     };
 
     Background.prototype.render = function() {
@@ -130,4 +123,4 @@
 
 }).call(this);
 
-//# sourceMappingURL=dettmar.js.map
+//# sourceMappingURL=duck.js.map

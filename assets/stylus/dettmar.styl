@@ -1,3 +1,9 @@
+retina = '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)'
+mobile = 'only screen and (min-device-width : 320px) and (max-device-width : 480px)'
+tablet = 'only screen and (min-device-width : 768px) and (max-device-width : 1024px)'
+portrait = 'only screen and (orientation : portrait)'
+landscape = 'only screen and (orientation : landscape)'
+
 html
 	background #ddd
 
@@ -41,6 +47,8 @@ a
 	color #33f
 	text-decoration none
 	border-bottom 10px solid
+	@media mobile
+		border-bottom-width 6px
 
 a:hover
 	color #f00
@@ -60,11 +68,17 @@ h1, h2, h3, h4, h5, h6
 h1
 	font-family 'Permanent Marker'
 	font-size 120px
+	line-height 120px
 	font-weight bold
 	-webkit-animation blink 5s alternate infinite
+	@media mobile
+		font-size 40px
+		line-height 40px
 
 h2
 	font-size 30px
+	@media mobile
+		font-size 22px
 
 p
 	width 40%
@@ -72,10 +86,12 @@ p
 	font-size 20px
 	margin 0 auto
 	line-height 2em
+	@media mobile
+		font-size 16px
 
 ul
 	width 80%
-	
+	padding 0 0 100px
 	margin 0 auto
 	list-style none
 
@@ -84,6 +100,8 @@ ul
 		
 		a
 			font-size 100px
+			@media mobile
+				font-size 30px
 		
 		.details
 			padding-top 30px
@@ -114,11 +132,16 @@ ul
 	font-size 30px
 	font-weight bold
 	line-height 60px
+	@media mobile
+		font-size 20px
+		line-height 40px
 	
 .peace
 	font-size 600px
 	font-family Arial, sans-serif
 	//-webkit-animation blink 5s alternate infinite
+	@media mobile
+		font-size 200px
 
 
 .icon
@@ -141,3 +164,6 @@ ul
 		transition: opacity .5s ease-in-out;
 		-moz-transition: opacity .5s ease-in-out;
 		-webkit-transition: opacity .5s ease-in-out;
+	.mobile_bg
+		width 100%
+		height 100%
