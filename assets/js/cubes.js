@@ -1,29 +1,12 @@
 (function() {
-  var Color, Path, Point, Shape, bEnd, bStart, beginning, bg, blockSideAmount, canvas, ctx, cube, cubeSize, cubeSteps, end, gEnd, gStart, getColor, getGradient, getSpectra, hasTurned, iso, layerSteps, rEnd, rStart, render, step, x, xLevel, xTarget, y, yLevel, yTarget, z, zTarget;
+  var Color, CubesBackground, Path, Point, Shape, Tower, cube, cubeSize,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   window.raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
   window.cancelRaf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
 
   window["easterTime"] = false;
-
-  canvas = document.createElement("canvas");
-
-  canvas.setAttribute("class", "mobile_bg");
-
-  bg = document.getElementById("background");
-
-  bg.appendChild(canvas);
-
-  bg.setAttribute("class", "loaded");
-
-  ctx = canvas.getContext("2d");
-
-  canvas.width = window.innerWidth * 2;
-
-  canvas.height = window.innerHeight * 2;
-
-  iso = new Isomer(canvas);
 
   Shape = Isomer.Shape;
 
@@ -33,135 +16,317 @@
 
   Path = Isomer.Path;
 
-  rStart = 219;
+  CubesBackground = (function() {
+    function CubesBackground() {
+      this.hide = __bind(this.hide, this);
+      this.setupElements();
+      this.listen();
+      this.tower = new Tower(this);
+      this.tower.done(function() {
+        return console.log("yolo");
+      });
+    }
 
-  gStart = 1;
+    CubesBackground.prototype.setupElements = function() {
+      this.canvas = document.createElement("canvas");
+      this.canvas.setAttribute("class", "mobile_bg");
+      this.bg = document.getElementById("background");
+      this.bg.appendChild(this.canvas);
+      this.bg.setAttribute("class", "loaded");
+      this.canvas.width = window.innerWidth * 2;
+      this.canvas.height = window.innerHeight * 2;
+      return this.iso = new Isomer(this.canvas);
+    };
 
-  bStart = 26;
+    CubesBackground.prototype.listen = function() {
+      return window.onresize = (function(_this) {
+        return function() {
+          _this.canvas.width = window.innerWidth * 2;
+          return _this.canvas.height = window.innerHeight * 2;
+        };
+      })(this);
+    };
 
-  rEnd = 235;
+    CubesBackground.prototype.hide = function() {
+      this.bg.setAttribute("class", "");
+      return setTimeout(this.canvas.parentElement.removeChild.bind(this.canvas.parentElement), 500, this.canvas);
+    };
 
-  gEnd = 175;
+    return CubesBackground;
 
-  bEnd = 28;
+  })();
 
-  getColor = function(step, level) {
-    var bVal, gVal, percent, rVal;
-    percent = (step + (level * layerSteps)) / cubeSteps;
-    rVal = Math.round((rEnd - rStart) * percent + rStart);
-    gVal = Math.round((gEnd - gStart) * percent + gStart);
-    bVal = Math.round((bEnd - bStart) * percent + bStart);
-    return new Color(rVal, gVal, bVal);
-  };
+  Tower = (function() {
+    Tower.prototype.cube = Shape.Prism(Point.ORIGIN, Tower.cubeSize, Tower.cubeSize, Tower.cubeSize);
 
-  getGradient = function(level, step) {
-    var bVal, gVal, percent, rVal;
-    percent = step / cubeSteps;
-    level = 1 + (level * 100);
-    rVal = Math.round(rStart * level * percent);
-    gVal = Math.round(gStart * level * percent);
-    bVal = Math.round(bStart * level * percent);
-    rVal = Math.min(rVal, 255);
-    gVal = Math.min(gVal, 255);
-    bVal = Math.min(bVal, 255);
-    return new Color(rVal, gVal, bVal);
-  };
+    Tower.prototype.beginning = Date.now();
 
-  getSpectra = function(x, y, level, step) {
-    var bVal, brightness, gVal, percent, rVal;
-    percent = step / cubeSteps;
-    brightness = (level / (blockSideAmount * 1)) * 255;
-    rVal = Math.round((x / blockSideAmount) * brightness);
-    gVal = Math.round((y / blockSideAmount) * brightness);
-    bVal = Math.round(brightness);
-    rVal *= 1 + (Math.random() * .1) - .2;
-    gVal *= 1 + (Math.random() * .1) - .2;
-    return new Color(rVal, gVal, bVal);
-  };
+    Tower.prototype.end = Date.now();
 
-  blockSideAmount = 6;
+    Tower.prototype.blockSideAmount = 6;
 
-  layerSteps = Math.pow(blockSideAmount + 1, 2);
+    Tower.prototype.layerSteps = Math.pow(Tower.prototype.blockSideAmount + 1, 2);
 
-  cubeSteps = Math.pow(blockSideAmount + 1, 3);
+    Tower.prototype.cubeSteps = Math.pow(Tower.prototype.blockSideAmount + 1, 3);
 
-  x = blockSideAmount;
+    Tower.prototype.x = Tower.prototype.blockSideAmount;
 
-  y = blockSideAmount;
+    Tower.prototype.y = Tower.prototype.blockSideAmount;
 
-  z = 0;
+    Tower.prototype.z = 0;
 
-  xTarget = blockSideAmount;
+    Tower.prototype.xTarget = Tower.prototype.blockSideAmount;
 
-  yTarget = blockSideAmount;
+    Tower.prototype.yTarget = Tower.prototype.blockSideAmount;
 
-  zTarget = blockSideAmount;
+    Tower.prototype.zTarget = Tower.prototype.blockSideAmount;
 
-  xLevel = blockSideAmount;
+    Tower.prototype.xLevel = Tower.prototype.blockSideAmount;
 
-  yLevel = blockSideAmount;
+    Tower.prototype.yLevel = Tower.prototype.blockSideAmount;
 
-  hasTurned = false;
+    Tower.prototype.hasTurned = false;
 
-  step = 0;
+    Tower.prototype.step = 0;
+
+    Tower.prototype.cubeSize = .5;
+
+    Tower.prototype.rStart = 219;
+
+    Tower.prototype.gStart = 1;
+
+    Tower.prototype.bStart = 26;
+
+    Tower.prototype.rEnd = 235;
+
+    Tower.prototype.gEnd = 175;
+
+    Tower.prototype.bEnd = 28;
+
+    function Tower(scene) {
+      this.scene = scene;
+      this.render = __bind(this.render, this);
+      this.render();
+      ({
+        done: this.done
+      });
+    }
+
+    Tower.prototype.getColor = function(step, level) {
+      var bVal, gVal, percent, rVal;
+      percent = (step + (level * this.layerSteps)) / this.cubeSteps;
+      rVal = Math.round((this.rEnd - this.rStart) * percent + this.rStart);
+      gVal = Math.round((this.gEnd - this.gStart) * percent + this.gStart);
+      bVal = Math.round((this.bEnd - this.bStart) * percent + this.bStart);
+      return new Color(rVal, gVal, bVal);
+    };
+
+    Tower.prototype.render = function() {
+      if (window.easterTime) {
+        this.scene.hide();
+        return;
+      }
+      this.beginning = Date.now();
+      this.scene.iso.add(cube.translate(this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize), this.getColor(this.step, this.z));
+      if (this.y === this.blockSideAmount && this.x === 0) {
+        this.hasTurned = true;
+      }
+      if (this.x === 0 && this.y === 0) {
+        if (this.z === this.blockSideAmount * 8) {
+          if (typeof this.next === "function") {
+            this.next();
+          }
+          return;
+        }
+        this.hasTurned = false;
+        this.x = this.blockSideAmount;
+        this.y = this.blockSideAmount;
+        this.xTarget = this.blockSideAmount;
+        this.yTarget = this.blockSideAmount;
+        this.xLevel = this.blockSideAmount;
+        this.yLevel = this.blockSideAmount;
+        this.step = 0;
+        this.z++;
+        return setTimeout(raf, 1000 / 60, this.render);
+      }
+      if (this.x === this.xTarget && this.y === this.yTarget) {
+        if (!this.hasTurned) {
+          this.x = --this.xLevel;
+          this.xTarget = this.blockSideAmount;
+          this.yTarget = this.x;
+          this.y = this.blockSideAmount;
+        } else {
+          this.y = --this.yLevel;
+          this.xTarget = this.y;
+          this.yTarget = 0;
+          this.x = 0;
+        }
+      } else {
+        this.y--;
+        this.x++;
+        this.step++;
+      }
+      this.end = Date.now();
+      this.diff = Math.max(this.end - this.beginning, 0);
+      this.delay = 1000 / 50 - this.diff;
+      return setTimeout(raf, this.delay, this.render);
+    };
+
+    Tower.prototype.done = function(next) {
+      this.next = next;
+    };
+
+    return Tower;
+
+  })();
 
   cubeSize = .5;
 
   cube = Shape.Prism(Point.ORIGIN, cubeSize, cubeSize, cubeSize);
 
-  beginning = end = Date.now();
+  new CubesBackground();
 
-  (render = function() {
-    var delay, diff;
-    if (window.easterTime) {
-      bg.setAttribute("class", "");
-      setTimeout(function() {
-        return canvas.parentElement.removeChild(canvas);
-      }, 500);
-      return;
-    }
-    beginning = Date.now();
-    iso.add(cube.translate(x * cubeSize, y * cubeSize, z * cubeSize), getColor(step, z));
-    if (y === blockSideAmount && x === 0) {
-      hasTurned = true;
-    }
-    if (x === 0 && y === 0) {
-      if (z === blockSideAmount * 8) {
-        return;
-      }
-      hasTurned = false;
-      x = blockSideAmount;
-      y = blockSideAmount;
-      xTarget = blockSideAmount;
-      yTarget = blockSideAmount;
-      xLevel = blockSideAmount;
-      yLevel = blockSideAmount;
-      step = 0;
-      z++;
-      return setTimeout(raf, 1000 / 60, render);
-    }
-    if (x === xTarget && y === yTarget) {
-      if (!hasTurned) {
-        x = --xLevel;
-        xTarget = blockSideAmount;
-        yTarget = x;
-        y = blockSideAmount;
-      } else {
-        y = --yLevel;
-        xTarget = y;
-        yTarget = 0;
-        x = 0;
-      }
-    } else {
-      y--;
-      x++;
-      step++;
-    }
-    end = Date.now();
-    diff = Math.max(end - beginning, 0);
-    delay = 1000 / 50 - diff;
-    return setTimeout(raf, delay, render);
-  })();
+
+  /*
+  rStart = 219
+  gStart = 1
+  bStart = 26
+  
+  rEnd = 235
+  gEnd = 175
+  bEnd = 28
+  
+  getColor = (step, level) ->
+  	
+  	percent = (step + (level * layerSteps)) / (cubeSteps)
+  		
+  	rVal = Math.round (rEnd - rStart) * percent + rStart
+  	gVal = Math.round (gEnd - gStart) * percent + gStart
+  	bVal = Math.round (bEnd - bStart) * percent + bStart
+  	
+  	new Color rVal, gVal, bVal
+  
+  
+  getGradient = (level, step) ->
+  	
+  	percent = step / cubeSteps
+  	
+  	level = 1 + (level * 100)
+  	
+  	rVal = Math.round rStart * level * percent
+  	gVal = Math.round gStart * level * percent
+  	bVal = Math.round bStart * level * percent
+  	
+  	rVal = Math.min rVal, 255
+  	gVal = Math.min gVal, 255
+  	bVal = Math.min bVal, 255
+  	
+  	new Color rVal, gVal, bVal
+  
+  
+  
+  
+  getSpectra = (x, y, level, step) ->
+  	
+  	percent = step / cubeSteps
+  	brightness = (level / (blockSideAmount * 1)) * 255
+  	
+  	rVal = Math.round (x / blockSideAmount) * brightness
+  	gVal = Math.round (y / blockSideAmount) * brightness
+  	bVal = Math.round brightness
+  	
+  	rVal *= 1 + (Math.random() * .1) - .2
+  	gVal *= 1 + (Math.random() * .1) - .2
+  	 *bVal *= Math.round brightness
+  	
+  	new Color rVal, gVal, bVal
+  
+  
+  blockSideAmount = 6
+  layerSteps = Math.pow blockSideAmount + 1, 2
+  cubeSteps = Math.pow blockSideAmount + 1, 3
+  
+  x = blockSideAmount
+  y = blockSideAmount
+  z = 0
+  
+  
+  xTarget = blockSideAmount
+  yTarget = blockSideAmount
+  zTarget = blockSideAmount
+  
+  xLevel = blockSideAmount
+  yLevel = blockSideAmount
+  
+  hasTurned = false
+  
+  step = 0
+  cubeSize = .5
+  
+  
+  cube = Shape.Prism Point.ORIGIN, cubeSize, cubeSize, cubeSize
+  
+  beginning = end = Date.now()
+  
+  do render = ->
+  	
+  	if window.easterTime
+  		bg.setAttribute "class", ""
+  		setTimeout ->
+  			canvas.parentElement.removeChild canvas
+  		, 500
+  		return
+  	
+  	beginning = Date.now()	
+  	
+  	iso.add cube.translate(x * cubeSize, y * cubeSize, z * cubeSize),
+  		 *getSpectra x, y, z, step
+  		getColor step, z 
+  		 *getGradient z, step
+  	
+  	hasTurned = true if y is blockSideAmount and x is 0
+  	
+  	if x is 0 and y is 0
+  		
+  		if z is blockSideAmount * 8
+  			return
+  		
+  		hasTurned = false
+  		x = blockSideAmount
+  		y = blockSideAmount
+  		xTarget = blockSideAmount
+  		yTarget = blockSideAmount
+  		
+  		xLevel = blockSideAmount
+  		yLevel = blockSideAmount
+  		step = 0
+  		z++
+  		return setTimeout raf, 1000 / 60, render
+  	
+  	if x is xTarget and y is yTarget
+  		
+  		unless hasTurned
+  			x = --xLevel
+  			xTarget = blockSideAmount
+  			yTarget = x
+  			y = blockSideAmount
+  		else
+  			y = --yLevel
+  			xTarget = y
+  			yTarget = 0
+  			x = 0
+  	
+  	else
+  		y--
+  		x++
+  		step++
+  	
+  	end = Date.now()
+  	diff = Math.max end - beginning, 0
+  	delay = 1000 / 50 - diff
+  
+  	setTimeout raf, delay, render
+   */
 
 }).call(this);
 
