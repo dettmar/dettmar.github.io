@@ -1,6 +1,6 @@
-retina = '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)'
-mobile = 'only screen and (min-device-width : 320px) and (max-device-width : 480px)'
-tablet = 'only screen and (min-device-width : 768px) and (max-device-width : 1024px)'
+retina = '(-webkit-min-pixel-ratio: 2), (min-resolution: 192dpi)'
+mobile = '(max-width : 480px)'
+tablet = '(max-width : 768px)'
 portrait = 'only screen and (orientation : portrait)'
 landscape = 'only screen and (orientation : landscape)'
 
@@ -47,7 +47,7 @@ a
 	color #33f
 	text-decoration none
 	border-bottom 10px solid
-	@media mobile
+	@media tablet
 		border-bottom-width 6px
 
 a:hover
@@ -74,11 +74,16 @@ h1
 	@media mobile
 		font-size 40px
 		line-height 40px
+	@media tablet
+		font-size 90px
+		line-height 90px
 
 h2
 	font-size 30px
 	@media mobile
 		font-size 22px
+	@media tablet
+		font-size 26px
 
 p
 	width 40%
@@ -88,6 +93,8 @@ p
 	line-height 2em
 	@media mobile
 		font-size 16px
+	@media tablet
+		font-size 18px
 
 ul
 	width 80%
@@ -102,6 +109,8 @@ ul
 			font-size 100px
 			@media mobile
 				font-size 30px
+			@media tablet
+				font-size 60px
 		
 		.details
 			padding-top 30px
@@ -116,6 +125,9 @@ ul
 	@media mobile
 		font-size 20px
 		line-height 40px
+	@media tablet
+		font-size 25px
+		line-height 50px
 	
 .peace
 	font-size 600px
