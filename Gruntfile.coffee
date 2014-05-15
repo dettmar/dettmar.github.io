@@ -5,13 +5,13 @@ module.exports = (grunt) ->
 		'http-server':
 			dev:
 				root: './'
-				port: 3000
+				port: 8080
 				runInBackground: true
 				cache: 1
 		
 		watch:
 			scripts:
-				files: ['assets/coffee/duck.coffee', 'assets/coffee/mobile.coffee']
+				files: 'assets/coffee/*.coffee'
 				tasks: ['coffee', 'uglify', 'concat']
 			css:
 				files: 'assets/stylus/dettmar.styl'

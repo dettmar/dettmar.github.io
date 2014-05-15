@@ -1,13 +1,12 @@
 window.raf = window.requestAnimationFrame or window.mozRequestAnimationFrame or window.webkitRequestAnimationFrame or window.msRequestAnimationFrame
 window.cancelRaf = window.cancelAnimationFrame or window.mozCancelAnimationFrame or window.webkitCancelAnimationFrame or window.msCancelAnimationFrame
+window["easterTime"] = false
 
 canvas = document.createElement "canvas"
 canvas.setAttribute "class", "mobile_bg"
 bg = document.getElementById("background")
 bg.appendChild canvas
 bg.setAttribute "class", "loaded"
-console.log bg
-
 
 ctx = canvas.getContext "2d"
 
@@ -116,7 +115,14 @@ cube = Shape.Prism Point.ORIGIN, cubeSize, cubeSize, cubeSize
 beginning = end = Date.now()
 
 do render = ->
-	console.log "render"
+	
+	if window.easterTime
+		bg.setAttribute "class", ""
+		setTimeout ->
+			canvas.parentElement.removeChild canvas
+		, 500
+		return
+	
 	beginning = Date.now()	
 	
 	iso.add cube.translate(x * cubeSize, y * cubeSize, z * cubeSize),
@@ -166,3 +172,4 @@ do render = ->
 	delay = 1000 / 50 - diff
 
 	setTimeout raf, delay, render
+

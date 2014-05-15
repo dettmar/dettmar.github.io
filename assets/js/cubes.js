@@ -5,6 +5,8 @@
 
   window.cancelRaf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
 
+  window["easterTime"] = false;
+
   canvas = document.createElement("canvas");
 
   canvas.setAttribute("class", "mobile_bg");
@@ -14,8 +16,6 @@
   bg.appendChild(canvas);
 
   bg.setAttribute("class", "loaded");
-
-  console.log(bg);
 
   ctx = canvas.getContext("2d");
 
@@ -113,7 +113,13 @@
 
   (render = function() {
     var delay, diff;
-    console.log("render");
+    if (window.easterTime) {
+      bg.setAttribute("class", "");
+      setTimeout(function() {
+        return canvas.parentElement.removeChild(canvas);
+      }, 500);
+      return;
+    }
     beginning = Date.now();
     iso.add(cube.translate(x * cubeSize, y * cubeSize, z * cubeSize), getColor(step, z));
     if (y === blockSideAmount && x === 0) {
