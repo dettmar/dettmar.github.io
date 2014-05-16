@@ -2,10 +2,11 @@
 
 sssl("/assets/js/mobile.js", function(){
 	
-	var hasClicked = false;
+	var hasClicked = false,
+		hand = document.getElementById("hand");
 	
-	if (!!window.WebGLRenderingContext)
-		document.getElementById("hand").onclick = function() {
+	if (!!window.WebGLRenderingContext && hand)
+		hand.onclick = function() {
 			if(hasClicked) return;
 			hasClicked = true;
 			easterTime = true;
@@ -16,6 +17,5 @@ sssl("/assets/js/mobile.js", function(){
 var emails = document.getElementsByClassName("email") || [];
 
 for(var i = 0, len = emails.length; i < len; i++) {
-	console.log(emails[i]);
 	emails[i].setAttribute("href", "mailto:dettmar@gmail.com");	
 }
