@@ -1,5 +1,6 @@
 (function() {
-  var Color, CubesBackground, Path, Point, Shape, Tower, cube, cubeSize,
+  var Color, CubesBackground, Path, Point, Shape, Tower, throttle,
+    __slice = [].slice,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   window.raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -15,6 +16,31 @@
   Color = Isomer.Color;
 
   Path = Isomer.Path;
+
+  throttle = function(fn, threshhold, scope) {
+    var deferTimer, last;
+    if (threshhold == null) {
+      threshhold = 100;
+    }
+    last = void 0;
+    deferTimer = void 0;
+    return function() {
+      var args, context, now;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      context = scope || this;
+      now = +(new Date);
+      if (last && now < last + threshhold) {
+        clearTimeout(deferTimer);
+        deferTimer = setTimeout(function() {
+          last = now;
+          fn.apply(context, args);
+        }, threshhold);
+      } else {
+        last = now;
+        fn.apply(context, args);
+      }
+    };
+  };
 
   CubesBackground = (function() {
     function CubesBackground() {
@@ -39,14 +65,14 @@
     };
 
     CubesBackground.prototype.listen = function() {
-      return window.onresize = (function(_this) {
+      return window.onresize = throttle((function(_this) {
         return function() {
           _this.canvas.width = window.innerWidth * 2;
           _this.canvas.height = window.innerHeight * 2;
           _this.iso.originX = _this.canvas.width / 2;
           return _this.iso.originY = _this.canvas.height * 0.9;
         };
-      })(this);
+      })(this));
     };
 
     CubesBackground.prototype.hide = function() {
@@ -59,8 +85,6 @@
   })();
 
   Tower = (function() {
-    Tower.prototype.cube = Shape.Prism(Point.ORIGIN, Tower.cubeSize, Tower.cubeSize, Tower.cubeSize);
-
     Tower.prototype.beginning = Date.now();
 
     Tower.prototype.end = Date.now();
@@ -108,6 +132,7 @@
     function Tower(scene) {
       this.scene = scene;
       this.render = __bind(this.render, this);
+      this.cube = Shape.Prism(Point.ORIGIN, this.cubeSize, this.cubeSize, this.cubeSize);
       this.render();
       ({
         done: this.done
@@ -125,11 +150,10 @@
 
     Tower.prototype.render = function() {
       if (window.easterTime) {
-        this.scene.hide();
-        return;
+        return this.scene.hide();
       }
       this.beginning = Date.now();
-      this.scene.iso.add(cube.translate(this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize), this.getColor(this.step, this.z));
+      this.scene.iso.add(this.cube.translate(this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize), this.getColor(this.step, this.z));
       if (this.y === this.blockSideAmount && this.x === 0) {
         this.hasTurned = true;
       }
@@ -149,9 +173,7 @@
         this.yLevel = this.blockSideAmount;
         this.step = 0;
         this.z++;
-        return setTimeout(raf, 1000 / 60, this.render);
-      }
-      if (this.x === this.xTarget && this.y === this.yTarget) {
+      } else if (this.x === this.xTarget && this.y === this.yTarget) {
         if (!this.hasTurned) {
           this.x = --this.xLevel;
           this.xTarget = this.blockSideAmount;
@@ -181,10 +203,6 @@
     return Tower;
 
   })();
-
-  cubeSize = .5;
-
-  cube = Shape.Prism(Point.ORIGIN, cubeSize, cubeSize, cubeSize);
 
   new CubesBackground();
 

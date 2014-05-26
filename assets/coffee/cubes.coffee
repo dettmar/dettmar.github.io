@@ -8,6 +8,27 @@ Color = Isomer.Color
 Path = Isomer.Path
 
 
+throttle = (fn, threshhold = 100, scope) ->
+	last = undefined
+	deferTimer = undefined
+	(args...) ->
+		context = scope or this
+		now = +new Date
+		if last and now < last + threshhold
+			
+			# hold on to it
+			clearTimeout deferTimer
+			deferTimer = setTimeout(->
+				last = now
+				fn.apply context, args
+				return
+			, threshhold)
+		else
+			last = now
+			fn.apply context, args
+		return
+
+
 class CubesBackground
 	
 	constructor: ->
@@ -32,9 +53,9 @@ class CubesBackground
 		@iso = new Isomer @canvas
 	
 	listen: ->
-		
-		window.onresize = =>
-			
+
+		window.onresize = throttle =>
+
 			@canvas.width = window.innerWidth * 2
 			@canvas.height = window.innerHeight * 2
 			@iso.originX = @canvas.width / 2;
@@ -48,7 +69,7 @@ class CubesBackground
 
 class Tower
 	
-	cube: Shape.Prism Point.ORIGIN, @cubeSize, @cubeSize, @cubeSize
+	
 	beginning: Date.now()
 	end: Date.now()
 	
@@ -82,7 +103,8 @@ class Tower
 	
 	
 	constructor: (@scene) ->
-	
+		
+		@cube = Shape.Prism Point.ORIGIN, @cubeSize, @cubeSize, @cubeSize
 		@render()
 		{ done: @done }
 	
@@ -96,23 +118,20 @@ class Tower
 		bVal = Math.round (@bEnd - @bStart) * percent + @bStart
 		
 		new Color rVal, gVal, bVal
-
+	
 	
 	render: => # setTimeout needs right context
 		
 		if window.easterTime
-			@scene.hide()
-			return
+			return @scene.hide()
 		
 		@beginning = Date.now()	
-		
-		@scene.iso.add cube.translate(@x * @cubeSize, @y * @cubeSize, @z * @cubeSize),
-			#getSpectra x, y, z, step
+		@scene.iso.add @cube.translate(@x * @cubeSize, @y * @cubeSize, @z * @cubeSize),
 			@getColor @step, @z 
-			#getGradient z, step
 		
 		@hasTurned = true if @y is @blockSideAmount and @x is 0
 		
+		# level is complete
 		if @x is 0 and @y is 0
 			
 			if @z is @blockSideAmount * 8
@@ -129,9 +148,9 @@ class Tower
 			@yLevel = @blockSideAmount
 			@step = 0
 			@z++
-			return setTimeout raf, 1000 / 60, @render
 		
-		if @x is @xTarget and @y is @yTarget
+		# row is complete
+		else if @x is @xTarget and @y is @yTarget
 			
 			unless @hasTurned
 				@x = --@xLevel
@@ -144,6 +163,7 @@ class Tower
 				@yTarget = 0
 				@x = 0
 		
+		# continue
 		else
 			@y--
 			@x++
@@ -157,9 +177,5 @@ class Tower
 	
 	done: (@next) ->
 		
-		
-
-cubeSize = .5
-cube = Shape.Prism Point.ORIGIN, cubeSize, cubeSize, cubeSize
 
 new CubesBackground()
