@@ -37,7 +37,7 @@ class CubesBackground
 		@listen()
 		@tower = new Tower @
 		@tower.done ->
-			console.log "yolo"
+			ga 'send', 'event', 'yolo', 'timeout'
 	
 	setupElements: ->
 	

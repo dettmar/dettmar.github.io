@@ -49,7 +49,7 @@
       this.listen();
       this.tower = new Tower(this);
       this.tower.done(function() {
-        return console.log("yolo");
+        return ga('send', 'event', 'yolo', 'timeout');
       });
     }
 
