@@ -58,6 +58,16 @@ module.exports = (grunt) ->
 			dist:
 				src: ["dev.html"]
 				dest: ["index.html"]
+		
+		htmlmin:
+			dist:
+				options:
+					removeComments: true
+					collapseWhitespace: true
+					minifyJS:
+						mangle: false
+				files:
+					"index.html": "index.html"
 
 	
 	@loadNpmTasks 'grunt-contrib-concat'
@@ -67,6 +77,7 @@ module.exports = (grunt) ->
 	@loadNpmTasks 'grunt-contrib-stylus'
 	@loadNpmTasks 'grunt-http-server'
 	@loadNpmTasks 'grunt-inline'
+	@loadNpmTasks 'grunt-contrib-htmlmin'
 
 	@registerTask 'default', [
 		'coffee'
@@ -83,5 +94,6 @@ module.exports = (grunt) ->
 		'stylus'
 		'concat'
 		'inline'
+		'htmlmin'
 		'http-server:prod'
 	]
