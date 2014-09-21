@@ -8,6 +8,11 @@ module.exports = (grunt) ->
 				port: 8080
 				runInBackground: true
 				cache: 1
+			prod:
+				root: './'
+				port: 8080
+				runInBackground: false
+				cache: 1
 		
 		watch:
 			scripts:
@@ -48,6 +53,11 @@ module.exports = (grunt) ->
 			compile:
 				files:
 					'assets/css/dettmar.css': 'assets/stylus/dettmar.styl'
+		
+		inline:
+			dist:
+				src: ["dev.html"]
+				dest: ["index.html"]
 
 	
 	@loadNpmTasks 'grunt-contrib-concat'
@@ -56,6 +66,7 @@ module.exports = (grunt) ->
 	@loadNpmTasks 'grunt-contrib-uglify'
 	@loadNpmTasks 'grunt-contrib-stylus'
 	@loadNpmTasks 'grunt-http-server'
+	@loadNpmTasks 'grunt-inline'
 
 	@registerTask 'default', [
 		'coffee'
@@ -64,4 +75,13 @@ module.exports = (grunt) ->
 		'concat'
 		'http-server:dev'
 		'watch'
+	]
+	
+	@registerTask 'prod', [
+		'coffee'
+		'uglify'
+		'stylus'
+		'concat'
+		'inline'
+		'http-server:prod'
 	]
