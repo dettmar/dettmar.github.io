@@ -71,33 +71,23 @@ class CubesBackground
 	listen: ->
 
 		window.onresize = debounce =>
-			clearTimeout @tower.timer
-			console.log "kill timer"
-			setTimeout =>
-				console.log "window.onresize deb"	
-				@tower.x = Tower::blockSideAmount
-				@tower.y = Tower::blockSideAmount
-				@tower.z = 0
-				@tower.step = 0
-				
-				@tower.xTarget = Tower::blockSideAmount
-				@tower.yTarget = Tower::blockSideAmount
-				@tower.zTarget = Tower::blockSideAmount
-				
-				@tower.xLevel = Tower::blockSideAmount
-				@tower.yLevel = Tower::blockSideAmount
-				recoverStep = @tower.totalStep
-				@tower.totalStep = 0
-				
-				
-				console.log "recoverStep", recoverStep
-				@tower.render true, recoverStep
-				
-				@canvas.width = window.innerWidth * 2
-				@canvas.height = window.innerHeight * 2
-				@iso.originX = @canvas.width / 2;
-				@iso.originY = @canvas.height * 0.9;
-			, 1000
+
+			@tower.x = Tower::blockSideAmount
+			@tower.y = Tower::blockSideAmount
+			@tower.z = 0
+			@tower.step = 0
+			
+			@tower.xTarget = Tower::blockSideAmount
+			@tower.yTarget = Tower::blockSideAmount
+			@tower.zTarget = Tower::blockSideAmount
+			
+			@tower.xLevel = Tower::blockSideAmount
+			@tower.yLevel = Tower::blockSideAmount
+			
+			@canvas.width = window.innerWidth * 2
+			@canvas.height = window.innerHeight * 2
+			@iso.originX = @canvas.width / 2
+			@iso.originY = @canvas.height * 0.9
 		, 250
 			
 	
@@ -130,7 +120,6 @@ class Tower
 	hasTurned: false
 	
 	step: 0
-	totalStep: 0
 	cubeSize: .5
 	
 	rStart: 219
@@ -167,7 +156,7 @@ class Tower
 			return @scene.hide()
 		
 		@beginning = Date.now()
-		console.log "dew", @x * @cubeSize, @y * @cubeSize, @z * @cubeSize
+
 		@scene.iso.add @cube.translate(@x * @cubeSize, @y * @cubeSize, @z * @cubeSize),
 			@getColor @step, @z
 		
@@ -210,24 +199,13 @@ class Tower
 			@y--
 			@x++
 			@step++
-		
-		@totalStep++
-		
-		#console.log "@totalStep", @totalStep
+				
+
 		@end = Date.now()
 		@diff = Math.max @end - @beginning, 0
 		@delay = 1000 / 50 - @diff
 
-		if restore is true
-			#console.log "restore !!!!!"
-			if @totalStep is step
-				console.log "restore reached", @totalStep
-				#@timer = setTimeout raf, @delay, @render
-			else
-				@render true, step
-				
-		else
-			@timer = setTimeout raf, @delay, @render
+		setTimeout raf, @delay, @render
 	
 	done: (@next) ->
 		

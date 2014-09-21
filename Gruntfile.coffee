@@ -40,7 +40,7 @@ module.exports = (grunt) ->
 				src: ['assets/js/libs/three.js', 'assets/js/duck.min.js']
 				dest: 'assets/js/webgl.js'
 			mobile:
-				src: ['assets/js/libs/isomer.min.js', 'assets/js/cubes.min.js']
+				src: ['assets/js/libs/isomer.min.js', 'assets/js/cubes.min.js', 'assets/js/libs/sssl.js']
 				dest: 'assets/js/mobile.js'
 
 	

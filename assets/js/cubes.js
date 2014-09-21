@@ -89,29 +89,19 @@
     CubesBackground.prototype.listen = function() {
       return window.onresize = debounce((function(_this) {
         return function() {
-          clearTimeout(_this.tower.timer);
-          console.log("kill timer");
-          return setTimeout(function() {
-            var recoverStep;
-            console.log("window.onresize deb");
-            _this.tower.x = Tower.prototype.blockSideAmount;
-            _this.tower.y = Tower.prototype.blockSideAmount;
-            _this.tower.z = 0;
-            _this.tower.step = 0;
-            _this.tower.xTarget = Tower.prototype.blockSideAmount;
-            _this.tower.yTarget = Tower.prototype.blockSideAmount;
-            _this.tower.zTarget = Tower.prototype.blockSideAmount;
-            _this.tower.xLevel = Tower.prototype.blockSideAmount;
-            _this.tower.yLevel = Tower.prototype.blockSideAmount;
-            recoverStep = _this.tower.totalStep;
-            _this.tower.totalStep = 0;
-            console.log("recoverStep", recoverStep);
-            _this.tower.render(true, recoverStep);
-            _this.canvas.width = window.innerWidth * 2;
-            _this.canvas.height = window.innerHeight * 2;
-            _this.iso.originX = _this.canvas.width / 2;
-            return _this.iso.originY = _this.canvas.height * 0.9;
-          }, 1000);
+          _this.tower.x = Tower.prototype.blockSideAmount;
+          _this.tower.y = Tower.prototype.blockSideAmount;
+          _this.tower.z = 0;
+          _this.tower.step = 0;
+          _this.tower.xTarget = Tower.prototype.blockSideAmount;
+          _this.tower.yTarget = Tower.prototype.blockSideAmount;
+          _this.tower.zTarget = Tower.prototype.blockSideAmount;
+          _this.tower.xLevel = Tower.prototype.blockSideAmount;
+          _this.tower.yLevel = Tower.prototype.blockSideAmount;
+          _this.canvas.width = window.innerWidth * 2;
+          _this.canvas.height = window.innerHeight * 2;
+          _this.iso.originX = _this.canvas.width / 2;
+          return _this.iso.originY = _this.canvas.height * 0.9;
         };
       })(this), 250);
     };
@@ -158,8 +148,6 @@
 
     Tower.prototype.step = 0;
 
-    Tower.prototype.totalStep = 0;
-
     Tower.prototype.cubeSize = .5;
 
     Tower.prototype.rStart = 219;
@@ -200,7 +188,6 @@
         return this.scene.hide();
       }
       this.beginning = Date.now();
-      console.log("dew", this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize);
       this.scene.iso.add(this.cube.translate(this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize), this.getColor(this.step, this.z));
       if (this.y === this.blockSideAmount && this.x === 0) {
         this.hasTurned = true;
@@ -235,19 +222,10 @@
         this.x++;
         this.step++;
       }
-      this.totalStep++;
       this.end = Date.now();
       this.diff = Math.max(this.end - this.beginning, 0);
       this.delay = 1000 / 50 - this.diff;
-      if (restore === true) {
-        if (this.totalStep === step) {
-          return console.log("restore reached", this.totalStep);
-        } else {
-          return this.render(true, step);
-        }
-      } else {
-        return this.timer = setTimeout(raf, this.delay, this.render);
-      }
+      return setTimeout(raf, this.delay, this.render);
     };
 
     Tower.prototype.done = function(next) {
