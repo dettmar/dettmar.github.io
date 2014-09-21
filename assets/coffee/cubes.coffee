@@ -8,6 +8,7 @@ Color = Isomer.Color
 Path = Isomer.Path
 
 
+
 throttle = (fn, threshhold = 100, scope) ->
 	last = undefined
 	deferTimer = undefined
@@ -28,6 +29,21 @@ throttle = (fn, threshhold = 100, scope) ->
 			fn.apply context, args
 		return
 
+debounce = (func, wait, immediate) ->
+	timeout = undefined
+	->
+		context = this
+		args = arguments
+		later = ->
+			timeout = null
+			func.apply context, args unless immediate
+			return
+
+		callNow = immediate and not timeout
+		clearTimeout timeout
+		timeout = setTimeout(later, wait)
+		func.apply context, args if callNow
+		return
 
 class CubesBackground
 	
@@ -54,12 +70,36 @@ class CubesBackground
 	
 	listen: ->
 
-		window.onresize = throttle =>
-
-			@canvas.width = window.innerWidth * 2
-			@canvas.height = window.innerHeight * 2
-			@iso.originX = @canvas.width / 2;
-			@iso.originY = @canvas.height * 0.9;
+		window.onresize = debounce =>
+			clearTimeout @tower.timer
+			console.log "kill timer"
+			setTimeout =>
+				console.log "window.onresize deb"	
+				@tower.x = Tower::blockSideAmount
+				@tower.y = Tower::blockSideAmount
+				@tower.z = 0
+				@tower.step = 0
+				
+				@tower.xTarget = Tower::blockSideAmount
+				@tower.yTarget = Tower::blockSideAmount
+				@tower.zTarget = Tower::blockSideAmount
+				
+				@tower.xLevel = Tower::blockSideAmount
+				@tower.yLevel = Tower::blockSideAmount
+				recoverStep = @tower.totalStep
+				@tower.totalStep = 0
+				
+				
+				console.log "recoverStep", recoverStep
+				@tower.render true, recoverStep
+				
+				@canvas.width = window.innerWidth * 2
+				@canvas.height = window.innerHeight * 2
+				@iso.originX = @canvas.width / 2;
+				@iso.originY = @canvas.height * 0.9;
+			, 1000
+		, 250
+			
 	
 	hide: =>
 
@@ -68,7 +108,6 @@ class CubesBackground
 
 
 class Tower
-	
 	
 	beginning: Date.now()
 	end: Date.now()
@@ -91,6 +130,7 @@ class Tower
 	hasTurned: false
 	
 	step: 0
+	totalStep: 0
 	cubeSize: .5
 	
 	rStart: 219
@@ -105,7 +145,7 @@ class Tower
 	constructor: (@scene) ->
 		
 		@cube = Shape.Prism Point.ORIGIN, @cubeSize, @cubeSize, @cubeSize
-		@render()
+		@render false
 		{ done: @done }
 	
 	
@@ -119,15 +159,17 @@ class Tower
 		
 		new Color rVal, gVal, bVal
 	
+	restoreState = []
 	
-	render: => # setTimeout needs right context
-		
+	render: (restore, step) => # setTimeout needs right context
+		#console.log "restore", restore, step
 		if window.easterTime
 			return @scene.hide()
 		
-		@beginning = Date.now()	
+		@beginning = Date.now()
+		console.log "dew", @x * @cubeSize, @y * @cubeSize, @z * @cubeSize
 		@scene.iso.add @cube.translate(@x * @cubeSize, @y * @cubeSize, @z * @cubeSize),
-			@getColor @step, @z 
+			@getColor @step, @z
 		
 		@hasTurned = true if @y is @blockSideAmount and @x is 0
 		
@@ -135,8 +177,8 @@ class Tower
 		if @x is 0 and @y is 0
 			
 			if @z is @blockSideAmount * 8
-				@next?()
-				return
+				# all is complete
+				return @next?()
 			
 			@hasTurned = false
 			@x = @blockSideAmount
@@ -169,11 +211,23 @@ class Tower
 			@x++
 			@step++
 		
+		@totalStep++
+		
+		#console.log "@totalStep", @totalStep
 		@end = Date.now()
 		@diff = Math.max @end - @beginning, 0
 		@delay = 1000 / 50 - @diff
-	
-		setTimeout raf, @delay, @render
+
+		if restore is true
+			#console.log "restore !!!!!"
+			if @totalStep is step
+				console.log "restore reached", @totalStep
+				#@timer = setTimeout raf, @delay, @render
+			else
+				@render true, step
+				
+		else
+			@timer = setTimeout raf, @delay, @render
 	
 	done: (@next) ->
 		

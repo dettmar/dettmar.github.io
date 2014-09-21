@@ -1,5 +1,5 @@
 (function() {
-  var Color, CubesBackground, Path, Point, Shape, Tower, throttle,
+  var Color, CubesBackground, Path, Point, Shape, Tower, debounce, throttle,
     __slice = [].slice,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -42,6 +42,28 @@
     };
   };
 
+  debounce = function(func, wait, immediate) {
+    var timeout;
+    timeout = void 0;
+    return function() {
+      var args, callNow, context, later;
+      context = this;
+      args = arguments;
+      later = function() {
+        timeout = null;
+        if (!immediate) {
+          func.apply(context, args);
+        }
+      };
+      callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) {
+        func.apply(context, args);
+      }
+    };
+  };
+
   CubesBackground = (function() {
     function CubesBackground() {
       this.hide = __bind(this.hide, this);
@@ -65,14 +87,33 @@
     };
 
     CubesBackground.prototype.listen = function() {
-      return window.onresize = throttle((function(_this) {
+      return window.onresize = debounce((function(_this) {
         return function() {
-          _this.canvas.width = window.innerWidth * 2;
-          _this.canvas.height = window.innerHeight * 2;
-          _this.iso.originX = _this.canvas.width / 2;
-          return _this.iso.originY = _this.canvas.height * 0.9;
+          clearTimeout(_this.tower.timer);
+          console.log("kill timer");
+          return setTimeout(function() {
+            var recoverStep;
+            console.log("window.onresize deb");
+            _this.tower.x = Tower.prototype.blockSideAmount;
+            _this.tower.y = Tower.prototype.blockSideAmount;
+            _this.tower.z = 0;
+            _this.tower.step = 0;
+            _this.tower.xTarget = Tower.prototype.blockSideAmount;
+            _this.tower.yTarget = Tower.prototype.blockSideAmount;
+            _this.tower.zTarget = Tower.prototype.blockSideAmount;
+            _this.tower.xLevel = Tower.prototype.blockSideAmount;
+            _this.tower.yLevel = Tower.prototype.blockSideAmount;
+            recoverStep = _this.tower.totalStep;
+            _this.tower.totalStep = 0;
+            console.log("recoverStep", recoverStep);
+            _this.tower.render(true, recoverStep);
+            _this.canvas.width = window.innerWidth * 2;
+            _this.canvas.height = window.innerHeight * 2;
+            _this.iso.originX = _this.canvas.width / 2;
+            return _this.iso.originY = _this.canvas.height * 0.9;
+          }, 1000);
         };
-      })(this));
+      })(this), 250);
     };
 
     CubesBackground.prototype.hide = function() {
@@ -85,6 +126,8 @@
   })();
 
   Tower = (function() {
+    var restoreState;
+
     Tower.prototype.beginning = Date.now();
 
     Tower.prototype.end = Date.now();
@@ -115,6 +158,8 @@
 
     Tower.prototype.step = 0;
 
+    Tower.prototype.totalStep = 0;
+
     Tower.prototype.cubeSize = .5;
 
     Tower.prototype.rStart = 219;
@@ -133,7 +178,7 @@
       this.scene = scene;
       this.render = __bind(this.render, this);
       this.cube = Shape.Prism(Point.ORIGIN, this.cubeSize, this.cubeSize, this.cubeSize);
-      this.render();
+      this.render(false);
       ({
         done: this.done
       });
@@ -148,21 +193,21 @@
       return new Color(rVal, gVal, bVal);
     };
 
-    Tower.prototype.render = function() {
+    restoreState = [];
+
+    Tower.prototype.render = function(restore, step) {
       if (window.easterTime) {
         return this.scene.hide();
       }
       this.beginning = Date.now();
+      console.log("dew", this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize);
       this.scene.iso.add(this.cube.translate(this.x * this.cubeSize, this.y * this.cubeSize, this.z * this.cubeSize), this.getColor(this.step, this.z));
       if (this.y === this.blockSideAmount && this.x === 0) {
         this.hasTurned = true;
       }
       if (this.x === 0 && this.y === 0) {
         if (this.z === this.blockSideAmount * 8) {
-          if (typeof this.next === "function") {
-            this.next();
-          }
-          return;
+          return typeof this.next === "function" ? this.next() : void 0;
         }
         this.hasTurned = false;
         this.x = this.blockSideAmount;
@@ -190,10 +235,19 @@
         this.x++;
         this.step++;
       }
+      this.totalStep++;
       this.end = Date.now();
       this.diff = Math.max(this.end - this.beginning, 0);
       this.delay = 1000 / 50 - this.diff;
-      return setTimeout(raf, this.delay, this.render);
+      if (restore === true) {
+        if (this.totalStep === step) {
+          return console.log("restore reached", this.totalStep);
+        } else {
+          return this.render(true, step);
+        }
+      } else {
+        return this.timer = setTimeout(raf, this.delay, this.render);
+      }
     };
 
     Tower.prototype.done = function(next) {
