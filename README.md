@@ -1,4 +1,4 @@
-dettmar.github.io
+[dettmar.se](http://dettmar.se)
 =================
 
-Personal website
+This is my personal website / portfolio &#9996;
