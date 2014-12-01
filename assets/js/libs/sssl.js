@@ -3,7 +3,7 @@
 var hasClicked = false,
 	hand = document.getElementById("hand");
 
-if (!!window.WebGLRenderingContext)
+if (!!window.WebGLRenderingContext && hand)
 	hand.onclick = function() {
 		if(hasClicked) return;
 		hasClicked = true;
