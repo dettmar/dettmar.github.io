@@ -115,6 +115,15 @@
 				</section>
 				
 				<section>
+					<h2>Stats</h2>
+					<ul>
+						<li>+140k vistors</li>
+						<li>20k calls</li>
+						<li>191 countries</li>
+					</ul>
+				</section>
+				
+				<section>
 					<h2>But then it died.</h2>
 				</section>
 				
@@ -138,7 +147,7 @@
 				
 				<section>
 					<h2>Thanks</h2>
-					<p><a href="http://dettmar.se">dettmar.se</a></p>
+					<p><a href="http://mapc.am">mapc.am</a></p>
 				</section>
 				
 				<!--section>
@@ -155,6 +164,7 @@
 		<script src="reveal.min.js"></script>
 
 		<script>
+			// https://github.com/hakimel/reveal.js/#configuration
 			Reveal.initialize({
 				controls: true,
 				progress: true,
@@ -171,6 +181,12 @@
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]*/
+			});
+			
+			Reveal.addEventListener('slidechanged', function(event) {
+			    // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+			    //ga('send', 'pageview', '/talks/mapcam/' + event.indexh);
+				console.log('/talks/mapcam/' + event.indexh);
 			});
 
 		</script>
