@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Creativity, how? | Johan Dettmar</title>
+		<link href='http://fonts.googleapis.com/css?family=Karla:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="reveal.min.css" type="text/css" media="screen" charset="utf-8">
+		<style type="text/css" media="screen">
+			html, body {
+				background: #ddd;
+				color: #33f;
+				font-family: "Karla";
+			}
+			.reveal .progress span {
+				background: white;
+			}
+			.reveal a {
+				color: inherit;
+				text-decoration: none;
+				
+			}
+			.reveal a:hover {
+				text-decoration: underline;
+			}
+			/* #555 */
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				margin: .5em 0;
+			}
+			.reveal h1 {
+				font-size: 8em;
+			}
+			.reveal h2 {
+				font-size: 5em;
+			}
+			.reveal h3 {
+				font-size: 2em;
+			}
+			.reveal p {
+				font-size: 1.5em;
+			}
+			.reveal ul, .reveal ol {
+				font-size: 2em;
+				line-height: 1.5em;
+			}
+			.reveal ul ul, .reveal ol ul {
+				font-size: 1em;
+			}
+		</style>
+		<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-6635830-4', 'auto');
+		ga('send', 'pageview');
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Creativity, how?</h1>
+				</section>
+				
+				<section>
+					<h3>Spoiler alert!</h3>
+					<h2>Everyone can be creative</h2>
+					<h3>It is a skill that can be improved, rather than a born-with-it talent.</h3>
+				</section>
+				
+				<section>
+					<h2>Who am I?</h2>
+					<ul>
+						<li>Hyper Island alumni</li>
+						<li>Freelancing developer</li>
+						<li>Project of How</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Concepts</h2>
+					<ul>
+						<li>The creative state (open vs closed mode)</li>
+						<li>Methods</li>
+						<li>Reflection + feedback</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>John Cleese on creativity</h2>
+					<p><a href="https://vimeo.com/89936101" target="_blank">vimeo.com/89936101</a></p>
+				</section>
+				
+				<section>
+					<h2>Methods</h2>
+					<ul>
+						<li>Double diamond</li>
+						<li>Yes and...</li>
+						<li>Post-its</li>
+					</ul>
+				</section>
+				
+				
+				<section>
+					<h2>Group methods</h2>
+					<ul>
+						<li>Predefined work environment (monkeys in a cage)</li>
+						<li>Feedback</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Least amount of effort</h2>
+					<ul>
+						<li>Good start: reflecting on how and why things are done in this order</li>
+						<li>Start/stop/continue with</li>
+						<li>No rush for a solution</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Thanks!</h2>
+					<h3><a href="https://twitter.com/interwebsDaily" target="_blank">@interwebsDaily</a></h3>
+				</section>
+			</div>
+
+		</div>
+		<script src="head.min.js" charset="utf-8"></script>
+		<script src="reveal.min.js"></script>
+
+		<script>
+			// https://github.com/hakimel/reveal.js/#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: "linear", //Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				dependencies: []/*[
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]*/
+			});
+			
+			Reveal.addEventListener('slidechanged', function(event) {
+			    ga('send', 'pageview', '/talks/mapcam/' + event.indexh);
+			});
+
+		</script>
+	</body>
+</html>
