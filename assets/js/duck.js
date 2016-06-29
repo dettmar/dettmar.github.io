@@ -122,5 +122,3 @@
   new Background();
 
 }).call(this);
-
-//# sourceMappingURL=duck.js.map

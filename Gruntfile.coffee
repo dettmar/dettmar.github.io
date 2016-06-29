@@ -24,7 +24,7 @@ module.exports = (grunt) ->
 		
 		coffee:
 			options:
-				sourceMap: true
+				sourceMap: false
 			compile:
 				files:
 					'assets/js/duck.js': 'assets/coffee/duck.coffee'
@@ -33,7 +33,7 @@ module.exports = (grunt) ->
 		uglify:
 			options:
 				report: 'gzip'
-				sourceMap: true
+				sourceMap: false
 				sourceMapName: 'assets/js/duck.min.js.map'
 			my_target:
 				files:

@@ -239,5 +239,3 @@
   new CubesBackground();
 
 }).call(this);
-
-//# sourceMappingURL=cubes.js.map
