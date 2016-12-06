@@ -139,8 +139,12 @@ ul
 	font-family Arial, sans-serif
 	span
 		cursor pointer
+	@media screen and (-webkit-min-device-pixel-ratio:0) // Chrome hack (emojis disappear over 253px)
+		font-size 253px
 	@media mobile
 		font-size 200px
+	
+
 
 
 #background
