@@ -99,10 +99,21 @@ let drawCharts = (workbook) => {
 	var previousPercentage = subsetData[subsetData.length-1-periodWeeks]["Andel vaccinerade"]
 
 	var derivative = (currentPercentage-previousPercentage)/periodWeeks
-	var weeksToGo = 1.0 / derivative
+	var percentageMissing = (1.0 - currentPercentage)
+	var weeksToGo = percentageMissing / derivative
 
-	selector.completed_date = new Date((new Date).getTime() + weeksToGo * 7 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10)
+	var weekMs = 7 * 24 * 60 * 60 * 1000
+	var now = Date.now()
+	selector.completed_date = new Date(now + weeksToGo * weekMs).toISOString().substring(0, 10)
 	selector.vaccination_rate = derivative
+
+
+	var midsummer = new Date(2021, 5, 24).getTime()
+	var timeLeft = (midsummer - now)
+	selector.supposed_rate  = percentageMissing / (timeLeft / weekMs)
+
+
+
 
 	if(selector.region_options.length < 2) {
 		let restRegions = data
@@ -373,7 +384,8 @@ var selector = new Vue({
 	data: {
 		updated_info: "",
 		completed_date: "",
-		vaccination_rate: "",
+		vaccination_rate: 0,
+		supposed_rate: 0,
 		selected_region: '| Sverige |',
 		region_options: [{ text: 'Sverige', value: "| Sverige |" }],
 		selected_measure: "Andel",
