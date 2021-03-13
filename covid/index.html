@@ -1,161 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>COVID-vaccineringar Sverige | Grafik över Folkhälsomyndighetens data.</title>
-		<meta name="description" content="Visualisering av Folkhälsomyndighetens data för att göra det lättare att förstå hur långt vi kommit och hur långt vi har kvar.">
-		<meta property="og:title" content="COVID-vaccineringar Sverige" />
-		<meta property="og:description" content="Visualisering av Folkhälsomyndighetens data för att göra det lättare att förstå hur långt vi kommit och hur långt vi har kvar." />
-		<!-- <meta property="og:image" content="https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png" /> -->
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style>
-			@import url('https://rsms.me/inter/inter.css');
-			html {
-				font-family: 'Inter', Arial, sans-serif;
-				line-height: 1.4em;
-				/* background: #eee; */
-			}
-			@supports (font-variation-settings: normal) {
-			html { font-family: 'Inter var', Arial, sans-serif; }
-			}
-			h2 {
-				margin-top: 6rem;
-			}
-			#main {
-				width: 60%;
-				margin: 10% 20%;
-				text-align: center;
-			}
-			p {
-				margin: auto 10%;
-			}
-			select {
-				font-family: 'Inter var', Arial, sans-serif;
-				/* background: white;
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      COVID-vaccineringar Sverige | Grafik över Folkhälsomyndighetens data.
+    </title>
+    <meta
+      name="description"
+      content="Visualisering av Folkhälsomyndighetens data för att göra det lättare att förstå hur långt vi kommit och hur långt vi har kvar."
+    />
+    <meta property="og:title" content="COVID-vaccineringar Sverige" />
+    <meta
+      property="og:description"
+      content="Visualisering av Folkhälsomyndighetens data för att göra det lättare att förstå hur långt vi kommit och hur långt vi har kvar."
+    />
+    <!-- <meta property="og:image" content="https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      @import url("https://rsms.me/inter/inter.css");
+      html {
+        font-family: "Inter", Arial, sans-serif;
+        line-height: 1.4em;
+        /* background: #eee; */
+      }
+      @supports (font-variation-settings: normal) {
+        html {
+          font-family: "Inter var", Arial, sans-serif;
+        }
+      }
+      h2 {
+        margin-top: 6rem;
+      }
+      #main {
+        width: 60%;
+        margin: 10% 20%;
+        text-align: center;
+      }
+      p {
+        margin: 1em 10%;
+      }
+      select {
+        font-family: "Inter var", Arial, sans-serif;
+        /* background: white;
 				border: none; */
-				font-size: inherit;
-				font-weight: inherit;
-			}
-			canvas {
-				margin-bottom: 2rem;
-			}
-			.wrapper {
-				width: 100%;
-			}
-			.side {
-				width: 50%;
-				float: left;
-			}
-			@media only screen and (max-width: 900px) {
-				#main {
-					width: 80%;
-					margin: 5% 10%;
-				}
-			}
-			@media only screen and (max-width: 480px) {
-				#main {
-					width: 100%;
-					margin: 10% 0%;
-				}
-				p {
-					margin: 1em 0%;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<section id="main">
-				<h1>Vaccinations-statistik för COVID-19 i grafik</h1>
-				<p>FHM släpper varje vecka ett <a href="https://fohm.maps.arcgis.com/sharing/rest/content/items/fc749115877443d29c2a49ea9eca77e9/data" target="_blank">Excel-ark</a> med statistik över vaccinationer mot Covid-19 i Sverige.
-					Siffror är bra men kan vara svåra att överskåda utan visuell hjälp.
-					Därför detta försök till att grafiskt visa vad som händer.</p>
-				<br>
-				<p>{{ updated_info }}</p>
+        font-size: inherit;
+        font-weight: inherit;
+      }
+      canvas {
+        margin-bottom: 2rem;
+      }
+      .wrapper {
+        width: 100%;
+      }
+      .side {
+        width: 50%;
+        float: left;
+      }
+      @media only screen and (max-width: 900px) {
+        #main {
+          width: 80%;
+          margin: 5% 10%;
+        }
+      }
+      @media only screen and (max-width: 480px) {
+        #main {
+          width: 100%;
+          margin: 10% 0%;
+        }
+        p {
+          margin: 1em 0%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section id="main">
+      <h1>Vaccinations-statistik för COVID-19 i grafik</h1>
+      <p>
+        FHM släpper varje vecka ett
+        <a
+          href="https://fohm.maps.arcgis.com/sharing/rest/content/items/fc749115877443d29c2a49ea9eca77e9/data"
+          target="_blank"
+          >Excel-ark</a
+        >
+        med statistik över vaccinationer mot Covid-19 i Sverige. Siffror är bra
+        men kan vara svåra att överskåda utan visuell hjälp. Därför detta försök
+        till att grafiskt visa vad som händer.
+      </p>
+      <p>{{ updated_info }}</p>
+      <h2>
+        Totalt antal COVID-19-vaccinationer i
+        <select v-on:change="onChange($event)" v-model="selected_region">
+          <option v-for="option in region_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        vecka {{ parseInt(latest_week, 10) }}
+      </h2>
+      <div class="wrapper">
+        <div class="side">
+          <canvas id="overall_chart_dos1" width="800" height="600"></canvas>
+        </div>
+        <div class="side">
+          <canvas id="overall_chart_dos2" width="800" height="600"></canvas>
+        </div>
+      </div>
+      <p>
+        Om den genomsnittliga vaccinations-takten
+        <select v-on:change="onChange($event)" v-model="selected_period">
+          <option v-for="option in period_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        av
+        <select v-on:change="onChange($event)" v-model="selected_dose">
+          <option v-for="option in dose_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        bibehålls ({{ (vaccination_rate*100).toFixed(2) }}% per vecka), så
+        beräknas alla över 18 år i {{ selected_region.replaceAll("|", "") }}
+        vara vaccinerade <b>{{ completed_date }}</b>.
+      </p>
+      <p>
+        För att nå målet, att ha vaccinerat alla i {{
+        selected_region.replaceAll("|", "") }} till midsommar, måste
+        vaccinations-takten {{ (supposed_rate <= vaccination_rate) ? 'stanna
+        över' : 'ökas till' }} {{ (supposed_rate*100).toFixed(2) }}% per vecka.
+      </p>
+      <p v-if="supposed_rate > vaccination_rate">
+        Det innebär en ökning med {{ (supposed_rate /
+        vaccination_rate).toFixed(1) }} gånger nuvarande takt.
+      </p>
 
-				<h2><!-- select v-on:change="onChange($event)" v-model="selected_cumulation">
+      <h2>
+        <!-- select v-on:change="onChange($event)" v-model="selected_cumulation">
 					<option v-for="option in cumulation_options" v-bind:value="option.value">
 					  {{ option.text }}
 					</option>
-				  </select--> <select v-on:change="onChange($event)" v-model="selected_measure"> 
-					<option v-for="option in measure_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select> COVID-19-vaccinationer i <select v-on:change="onChange($event)" v-model="selected_region">
-					<option v-for="option in region_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select></h2>
-				  
-				<canvas id="main_line_chart" width="800" height="400"></canvas>
-				
-				<p>Om den genomsnittliga vaccinations-hastigheten <select v-on:change="onChange($event)" v-model="selected_period">
-					<option v-for="option in period_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select> av <select v-on:change="onChange($event)" v-model="selected_dose"><option v-for="option in dose_options" v-bind:value="option.value">
-					{{ option.text }}
-				  </option>
-				</select> bibehålls ({{ (vaccination_rate*100).toFixed(2) }}% per vecka), så beräknas alla i {{ selected_region.replaceAll("|", "") }} vara vaccinerade {{ completed_date }}.</p>
-				<p>För att nå målet, att ha vaccinerat alla i {{ selected_region.replaceAll("|", "") }} över 18 år till midsommar, måste vaccinations-hastigheten {{ (supposed_rate <= vaccination_rate) ? 'stanna över' : 'ökas till' }} {{ (supposed_rate*100).toFixed(2) }}% per vecka.</p>
-				<p v-if="supposed_rate > vaccination_rate">
-					Det innebär en ökning med {{ (supposed_rate / vaccination_rate).toFixed(2) }} gånger nuvarande hastighet.
-				  </p>
+				  </select-->
+        <select v-on:change="onChange($event)" v-model="selected_measure">
+          <option v-for="option in measure_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        COVID-19-vaccinationer i
+        <select v-on:change="onChange($event)" v-model="selected_region">
+          <option v-for="option in region_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        över tid
+      </h2>
 
-				<h2><select v-on:change="onChange($event)" v-model="selected_measure">
-					<option v-for="option in measure_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select> vaccinerade per <select v-on:change="onChange($event)" v-model="selected_scope">
-					<option v-for="option in scope_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select></h2>
-				<canvas id="barchart" width="800" height="1000"></canvas>
+      <canvas id="main_line_chart" width="800" height="400"></canvas>
 
+      <h2>
+        <select v-on:change="onChange($event)" v-model="selected_measure">
+          <option v-for="option in measure_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        vaccinerade per
+        <select v-on:change="onChange($event)" v-model="selected_scope">
+          <option v-for="option in scope_options" v-bind:value="option.value">
+            {{ option.text.toLowerCase() }}
+          </option>
+        </select>
+      </h2>
+      <canvas id="barchart" width="800" height="1000"></canvas>
 
-				<h2><select v-on:change="onChange($event)" v-model="selected_measure">
-					<option v-for="option in measure_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select> vaccinerade per åldersgrupp i <select v-on:change="onChange($event)" v-model="selected_region">
-					<option v-for="option in region_options" v-bind:value="option.value">
-					  {{ option.text }}
-					</option>
-				  </select></h2>
-				  <canvas id="barchart_age" width="800" height="400"></canvas>
+      <h2>
+        <select v-on:change="onChange($event)" v-model="selected_measure">
+          <option v-for="option in measure_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        vaccinerade per åldersgrupp i
+        <select v-on:change="onChange($event)" v-model="selected_region">
+          <option v-for="option in region_options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+      </h2>
+      <canvas id="barchart_age" width="800" height="400"></canvas>
 
+      <h2>Antal vaccinerade per kön i Sverige</h2>
+      <canvas id="gender_chart" width="800" height="500"></canvas>
 
-				  <h2>Antal vaccinerade per kön i Sverige
-				</h2>
-				<canvas id="gender_chart" width="800" height="500"></canvas>
+      <h2>Andel vaccinerade per kön i Sverige</h2>
+      <div class="wrapper">
+        <div class="side">
+          <canvas
+            id="gender_chart_relative_women"
+            width="800"
+            height="600"
+          ></canvas>
+        </div>
+        <div class="side">
+          <canvas
+            id="gender_chart_relative_men"
+            width="800"
+            height="600"
+          ></canvas>
+        </div>
+      </div>
+      <p>
+        I de två cirkel-diagrammen ovan, är Dos 2 lagd ovanpå (mao. subtraherad
+        från) Dos 1. Detta eftersom personer som fått Dos 2 också fått Dos 1 och
+        därmed inte bör adderas igen när man beräknar det totala antalet
+        vaccinerade personer. Graferna är därmed missvisande om Dos 2 döljs.
+      </p>
 
-				<h2>Andel vaccinerade per kön i Sverige
-				</h2>
-				<div class="wrapper">
-					<div class="side"><canvas id="gender_chart_relative_women" width="800" height="600"></canvas></div>
-					<div class="side"><canvas id="gender_chart_relative_men" width="800" height="600"></canvas></div>
-				</div>
-				<p>I de två cirkel-diagrammen ovan, är Dos 2 lagd ovanpå (mao. subtraherad från) Dos 1. Detta eftersom personer som fått Dos 2 också fått Dos 1 och därmed inte bör adderas igen när man beräknar det totala antalet vaccinerade personer.</p>
-				
-				<h2>Vidare information</h2>
-				<p>Källa <a href="https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/vaccination-mot-covid-19/statistik/statistik-over-registrerade-vaccinationer-covid-19/" target="_blank">Nationella vaccinationsregistret (NVR)</a>:
-				</p>
-				<p>	<small>
-					Statistiken omfattar givna vaccinationer (utifrån vaccinationsdatum) till och med föregående vecka och kommer att uppdateras varje torsdag kl 14:00.
-					
-					Efterregistrering görs vilket betyder att uppgifterna i registret uppdateras löpande även bakåt i tiden. 
-					
-					Överföringen från journalsystemen till NVR sker automatiskt (hel- eller halvautomatiskt).
-					
-					Andelar beräknas baserat på SCB:s Befolkningsstatistik över folkmängd den 31 december 2020 för personer 18 år eller äldre.</small>
-				</p>
-				<br><br>
-					<p>Skapad av <a href="https://dettmar.se">J. Dettmar</a></p>
-
-		</section>
-		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
-		<script src="script.js"></script>
-	</body>
+      <h2>Vidare information</h2>
+      <p>
+        Källa
+        <a
+          href="https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/vaccination-mot-covid-19/statistik/statistik-over-registrerade-vaccinationer-covid-19/"
+          target="_blank"
+          >Nationella vaccinationsregistret (NVR)</a
+        >:
+      </p>
+      <p>
+        <small>
+          Statistiken omfattar givna vaccinationer (utifrån vaccinationsdatum)
+          till och med föregående vecka och kommer att uppdateras varje torsdag
+          kl 14:00. Efterregistrering görs vilket betyder att uppgifterna i
+          registret uppdateras löpande även bakåt i tiden. Överföringen från
+          journalsystemen till NVR sker automatiskt (hel- eller
+          halvautomatiskt). Andelar beräknas baserat på SCB:s
+          Befolkningsstatistik över folkmängd den 31 december 2020 för personer
+          18 år eller äldre.</small
+        >
+      </p>
+      <br /><br />
+      <p>Skapad av <a href="https://dettmar.se">J. Dettmar</a></p>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
