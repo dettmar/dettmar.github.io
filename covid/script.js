@@ -38,7 +38,7 @@ let drawCharts = (workbook) => {
 	var xs = subsetData.filter(row => row.Dosnummer === "Dos 1").map(row => parseInt(row.Vecka, 10))
 	var ysDos1 = subsetData.filter(row => row.Dosnummer === "Dos 1").map(row => row[`${selector.selected_measure} vaccinerade`] * scaling)
 	var ysDos2 = subsetData.filter(row => row.Dosnummer === "Dos 2").map(row => row[`${selector.selected_measure} vaccinerade`] * scaling)
-	var progressionChart = new Chart('myChart', {
+	var progressionChart = new Chart(document.getElementById('main_line_chart').getContext('2d'), {
 		type: 'line',
 		data: {
 			labels: xs,
@@ -146,8 +146,8 @@ let drawCharts = (workbook) => {
 		var ysDos2 = data.map(row => row[`${selector.selected_measure}_dos2`]*scaling)
 	}
 
-
-	var horizontalBar = new Chart("barchart", {
+	
+	var horizontalBar = new Chart(document.getElementById('barchart').getContext('2d'), {
 				type: 'horizontalBar',
 				data: {
 			labels: allRegions,
@@ -225,8 +225,8 @@ let drawCharts = (workbook) => {
 	var ageGroups = regionAgeData.map(row => row["Åldersgrupp"]).filter((v, i, a) => a.indexOf(v) === i)
 	var ysDos1 = regionAgeData.filter(row => row.Dosnummer === "Dos 1").map(row => row[`${selector.selected_measure} vaccinerade`]*scaling)
 	var ysDos2 = regionAgeData.filter(row => row.Dosnummer === "Dos 2").map(row => row[`${selector.selected_measure} vaccinerade`]*scaling)
-
-	var ageBar = new Chart("barchart_age", {
+	
+	var ageBar = new Chart(document.getElementById('barchart_age').getContext('2d'), {
 				type: 'bar',
 				data: {
 			labels: ageGroups,
@@ -302,8 +302,8 @@ let drawCharts = (workbook) => {
 		
 		var ysDos1 = genderData.filter(row => row.Dosnummer === "Dos 1").map(row => row["Antal vaccinerade"])
 		var ysDos2 = genderData.filter(row => row.Dosnummer === "Dos 2").map(row => row["Antal vaccinerade"])
-
-	var genDonut = new Chart("gender_chart", {
+		
+	var genDonut = new Chart(document.getElementById("gender_chart").getContext('2d'), {
 		type: 'doughnut',
 		data: {
 		  labels: genderCategories,
@@ -340,8 +340,8 @@ let drawCharts = (workbook) => {
 		})
 		ys.push(100-total)
 		labels.push(displayGender + " Ovaccinerade")
-
-		return new Chart("gender_chart_relative_"+idGender, {
+		
+		return new Chart(document.getElementById("gender_chart_relative_"+idGender).getContext('2d'), {
 			type: 'pie',
 			data: {
 			labels: labels,
