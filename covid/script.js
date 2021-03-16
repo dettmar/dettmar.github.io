@@ -176,7 +176,7 @@ let drawCharts = (workbook) => {
 			.filter((v, i, a) => a.indexOf(v) === i || name === "| Sverige |")
 			.sort()
 			.map(name => {
-				return { text: name.replaceAll("|", "").trim(), value: name }
+				return { text: name.split("|").join("").trim(), value: name } // .replaceAll("|", "")
 			})
 			
 		selector.region_options = [{ text: 'Sverige', value: "| Sverige |" }, ...restRegions]

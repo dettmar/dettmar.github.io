@@ -70,11 +70,34 @@
 					Siffror är bra men kan vara svåra att överskåda utan visuell hjälp.
 					Därför detta försök till att grafiskt visa vad som händer.</p>
 				<p>{{ updated_info }}</p>
+				<!-- <h2>Frågor och svar</h2>
+				<dl>
+					<dt>Hur många är vaccinerade i <select v-on:change="onChange($event)" v-model="selected_region">
+						<option v-for="option in region_options" v-bind:value="option.value">
+						  {{ option.text }}
+						</option>
+					  </select>?</dt>
+					<dd>T.o.m. den DATUM är ANTAL vaccinerade i REGION</dd>
+				
+					<dt>Når <select v-on:change="onChange($event)" v-model="selected_region">
+						<option v-for="option in region_options" v-bind:value="option.value">
+						  {{ option.text }}
+						</option>
+					  </select> målet med nuvarande vaccinations-takt?</dt>
+					<dd>Målet att ha vaccinerat alla i REGION till midsommar kommer INTE att ske?</dd>
+
+					<dt>När beräknas alla behöriga vara vaccinerade i REGION?</dt>
+					<dd>Att alla ska ha fått dos 1/2 till, med genomsnitts-takten TEMPO kommer nås den DATUM.</dd>
+
+					<dt>Hur förändras vaccinations-takten?</dt>
+					<dd>Om man jämför den senaste TISDPERIOD med föregående av DOS 1/2 så ökar/sjunker takten</dd>
+				</dl> -->
+				
 				<h2>Totalt antal COVID-19-vaccinationer i <select v-on:change="onChange($event)" v-model="selected_region">
 					<option v-for="option in region_options" v-bind:value="option.value">
 					  {{ option.text }}
 					</option>
-				  </select> vecka {{ parseInt(latest_week, 10) }}</h2>
+				  </select> t.o.m. vecka {{ parseInt(latest_week, 10) }}</h2>
 				  <div class="wrapper">
 					<div class="side"><canvas id="overall_chart_dos1" width="800" height="600"></canvas></div>
 					<div class="side"><canvas id="overall_chart_dos2" width="800" height="600"></canvas></div>
