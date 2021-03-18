@@ -1,4 +1,4 @@
-if(true || window.location.href.includes("localhost")) {
+if(false && window.location.href.includes("localhost")) {
 	var url = "data/Folkhalsomyndigheten_Covid19_Vaccine.xlsx";
 }
 else {
