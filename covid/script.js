@@ -244,7 +244,7 @@ let drawCharts = (workbook) => {
 						xAxes: [{
 							ticks: {
 								suggestedMMax: 100,
-								3//suggestedMax: 1e6//10099265
+								//suggestedMax: 1e6//10099265
 							}
 						}]
 				},
@@ -418,6 +418,10 @@ let drawCharts = (workbook) => {
 
 
 
+Date.prototype.getWeek = function() {
+	var onejan = new Date(this.getFullYear(),0,1);
+	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
+}
 
 
 var selector = new Vue({
@@ -427,7 +431,7 @@ var selector = new Vue({
 		completed_date: "",
 		vaccination_rate: 0,
 		supposed_rate: 0,
-		latest_week: 9,
+		latest_week: (new Date()).getWeek(),
 		selected_region: '| Sverige |',
 		region_options: [{ text: 'Sverige', value: "| Sverige |" }],
 		selected_measure: "Andel",
