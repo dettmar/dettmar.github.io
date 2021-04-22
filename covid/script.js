@@ -29,6 +29,12 @@ req.onload = function(e) {
 	}
 }
 
+let oldMapper = row => {
+	let old_id = ["Minst 1 dos", "Färdigvaccinerade"].indexOf(row.Vaccinationsstatus)
+	row.Dosnummer = ["Dos 1", "Dos 2"][old_id]
+	return row
+}
+
 let drawCharts = (workbook) => {
 	var isPecentage = (selector.selected_measure === "Andel")
 	var scaling = (isPecentage ? 100 : 1)
@@ -37,7 +43,7 @@ let drawCharts = (workbook) => {
 		["Dos 1", "dos1"],
 		["Dos 2", "dos2"]
 	]
-	var data = XLSX.utils.sheet_to_json(workbook.Sheets["Vaccinerade tidsserie"])
+	var data = XLSX.utils.sheet_to_json(workbook.Sheets["Vaccinerade tidsserie"]).map(oldMapper)
 
 	var totPies = dosisStats.map(stat => {
 		var [dose, idDose] = stat
@@ -146,6 +152,9 @@ let drawCharts = (workbook) => {
 		}
 	});
 
+	
+	
+
 
 	subsetData = subsetData.filter(row => row.Dosnummer === selector.selected_dose)
 	
@@ -235,7 +244,7 @@ let drawCharts = (workbook) => {
 						xAxes: [{
 							ticks: {
 								suggestedMMax: 100,
-								//suggestedMax: 1e6//10099265
+								3//suggestedMax: 1e6//10099265
 							}
 						}]
 				},
@@ -270,7 +279,7 @@ let drawCharts = (workbook) => {
 	
 	
 	
-	var ageData = XLSX.utils.sheet_to_json(workbook.Sheets["Vaccinerade ålder"])
+	var ageData = XLSX.utils.sheet_to_json(workbook.Sheets["Vaccinerade ålder"]).map(oldMapper)
 	var regionAgeData = ageData.filter(row => row.Region === selector.selected_region && row["Åldersgrupp"] !== "Totalt")
 	var ageGroups = regionAgeData.map(row => row["Åldersgrupp"]).filter((v, i, a) => a.indexOf(v) === i)
 	var ysDos1 = regionAgeData.filter(row => row.Dosnummer === "Dos 1").map(row => row[`${selector.selected_measure} vaccinerade`]*scaling)
@@ -340,7 +349,7 @@ let drawCharts = (workbook) => {
 
 
 
-	var genderData = XLSX.utils.sheet_to_json(workbook.Sheets["Vaccinerade kön"])
+	var genderData = XLSX.utils.sheet_to_json(workbook.Sheets["Vaccinerade kön"]).map(oldMapper)
 	genderData = genderData
 		.filter(row => row["Kön"] !== "Totalt")
 	var genderCategories = genderData.map(row => row["Kön"] + " " +  row.Dosnummer)
