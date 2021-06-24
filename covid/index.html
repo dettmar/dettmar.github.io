@@ -78,7 +78,7 @@
 						</option>
 					  </select>?</dt>
 					<dd>T.o.m. den DATUM är ANTAL vaccinerade i REGION</dd>
-				
+
 					<dt>Når <select v-on:change="onChange($event)" v-model="selected_region">
 						<option v-for="option in region_options" v-bind:value="option.value">
 						  {{ option.text }}
@@ -92,7 +92,7 @@
 					<dt>Hur förändras vaccinations-takten?</dt>
 					<dd>Om man jämför den senaste TISDPERIOD med föregående av DOS 1/2 så ökar/sjunker takten</dd>
 				</dl> -->
-				
+
 				<h2>Totalt antal COVID-19-vaccinationer i <select v-on:change="onChange($event)" v-model="selected_region">
 					<option v-for="option in region_options" v-bind:value="option.value">
 					  {{ option.text }}
@@ -110,16 +110,16 @@
 					{{ option.text }}
 				  </option>
 				</select> bibehålls ({{ (vaccination_rate*100).toFixed(2) }}% per vecka), så beräknas alla över 18 år i {{ selected_region.replaceAll("|", "") }} vara vaccinerade <b>{{ completed_date }}</b>.</p>
-				<p>För att nå målet, att ha vaccinerat alla i {{ selected_region.replaceAll("|", "") }} till midsommar, måste vaccinations-takten {{ (supposed_rate <= vaccination_rate) ? 'stanna över' : 'ökas till' }} {{ (supposed_rate*100).toFixed(2) }}% per vecka.</p>
+				<!-- <p>För att nå målet, att ha vaccinerat alla i {{ selected_region.replaceAll("|", "") }} till midsommar, måste vaccinations-takten {{ (supposed_rate <= vaccination_rate) ? 'stanna över' : 'ökas till' }} {{ (supposed_rate*100).toFixed(2) }}% per vecka.</p>
 				<p v-if="supposed_rate > vaccination_rate">
 					Det innebär en ökning med {{ (supposed_rate / vaccination_rate).toFixed(1) }} gånger nuvarande takt.
-				  </p>
+				  </p> -->
 
 				<h2><!-- select v-on:change="onChange($event)" v-model="selected_cumulation">
 					<option v-for="option in cumulation_options" v-bind:value="option.value">
 					  {{ option.text }}
 					</option>
-				  </select--> <select v-on:change="onChange($event)" v-model="selected_measure"> 
+				  </select--> <select v-on:change="onChange($event)" v-model="selected_measure">
 					<option v-for="option in measure_options" v-bind:value="option.value">
 					  {{ option.text }}
 					</option>
@@ -128,7 +128,7 @@
 					  {{ option.text }}
 					</option>
 				  </select> över tid</h2>
-				  
+
 				<canvas id="main_line_chart" width="800" height="400"></canvas>
 
 				<h2><select v-on:change="onChange($event)" v-model="selected_measure">
@@ -166,17 +166,17 @@
 					<div class="side"><canvas id="gender_chart_relative_men" width="800" height="600"></canvas></div>
 				</div>
 				<p>I de två cirkel-diagrammen ovan, är Dos 2 lagd ovanpå (mao. subtraherad från) Dos 1. Detta eftersom personer som fått Dos 2 också fått Dos 1 och därmed inte bör adderas igen när man beräknar det totala antalet vaccinerade personer. Graferna är därmed missvisande om Dos 2 döljs.</p>
-				
+
 				<h2>Vidare information</h2>
 				<p>Källa <a href="https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/vaccination-mot-covid-19/statistik/statistik-over-registrerade-vaccinationer-covid-19/" target="_blank">Nationella vaccinationsregistret (NVR)</a>:
 				</p>
 				<p>	<small>
 					Statistiken omfattar givna vaccinationer (utifrån vaccinationsdatum) till och med föregående vecka och kommer att uppdateras varje torsdag kl 14:00.
-					
-					Efterregistrering görs vilket betyder att uppgifterna i registret uppdateras löpande även bakåt i tiden. 
-					
+
+					Efterregistrering görs vilket betyder att uppgifterna i registret uppdateras löpande även bakåt i tiden.
+
 					Överföringen från journalsystemen till NVR sker automatiskt (hel- eller halvautomatiskt).
-					
+
 					Andelar beräknas baserat på SCB:s Befolkningsstatistik över folkmängd den 31 december 2020 för personer 18 år eller äldre.</small>
 				</p>
 				<br><br>
