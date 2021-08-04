@@ -20,59 +20,11 @@
 			font-display: swap;
 			src: url("https://rsms.me/inter/font-files/Inter-roman.var.woff2?3.13") format("woff2");
 			}
-			@font-face {
-			font-family: 'Inter var';
-			font-weight: 100 900;
-			font-style: italic;
-			font-named-instance: 'Italic';
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-italic.var.woff2?3.13") format("woff2");
-			}
-			/* Legacy naming compatibility */
-			@font-face {
-			font-family: 'Inter var alt';
-			font-weight: 100 900;
-			font-style: normal;
-			font-named-instance: 'Regular';
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-roman.var.woff2?3.13") format("woff2");
-			}
-			@font-face {
-			font-family: 'Inter var alt';
-			font-weight: 100 900;
-			font-style: italic;
-			font-named-instance: 'Italic';
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-italic.var.woff2?3.13") format("woff2");
-			}
-			@font-face {
-			font-family: 'Inter';
-			font-style:  normal;
-			font-weight: 400;
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-Regular.woff2?3.13") format("woff2"),
-				url("https://rsms.me/inter/font-files/Inter-Regular.woff?3.13") format("woff");
-			}
-			@font-face {
-			font-family: 'Inter';
-			font-style:  normal;
-			font-weight: 600;
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-SemiBold.woff2?3.13") format("woff2"),
-				url("https://rsms.me/inter/font-files/Inter-SemiBold.woff?3.13") format("woff");
-			}
-			@font-face {
-			font-family: 'Inter';
-			font-style:  normal;
-			font-weight: 800;
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-ExtraBold.woff2?3.13") format("woff2"),
-				url("https://rsms.me/inter/font-files/Inter-ExtraBold.woff?3.13") format("woff");
-			}
 
-			html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+			html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
 			@supports (font-variation-settings: normal) {
-				html { font-family: 'Inter var', -apple-system, BlinkMacSystemFont, sans-serif; }
+				html { font-family: 'Inter var', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
 			}
 			html, body {
 				background: #eee;
@@ -146,18 +98,19 @@
 					margin-left: 0;
 				}
 			}
-			/* @media (prefers-color-scheme: dark) {
+			@media (prefers-color-scheme: dark) {
 				html, body {
-					background: #222;
-					color: #eee;
+					background: #000076;
+					/* color: rgb(157, 149, 117); */
+					color: #ccc;
 				}
 				a {
-					color: rgb(190, 206, 216);
+					color: #ccc;
 				}
 				a:visited {
-					color: rgb(206, 195, 218);
+					color: #ccc;
 				}
-			} */
+			}
 		</style>
 	</head>
 	<body>
