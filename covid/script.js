@@ -30,9 +30,18 @@ req.onload = function(e) {
 }
 
 let oldMapper = row => {
-	let old_id = ["Minst 1 dos", "Färdigvaccinerade"].indexOf(row.Vaccinationsstatus)
+	let old_id = ["Minst 1 dos", "Minst 2 doser"].indexOf(row.Vaccinationsstatus)
 	row.Dosnummer = ["Dos 1", "Dos 2"][old_id]
 	return row
+}
+
+let numberCleaner = (num) => {
+	if (Number.isFinite(num)) {
+		return num
+	}
+	else {
+		return parseFloat(num.replace(",", "."))
+	}
 }
 
 let drawCharts = (workbook) => {
@@ -47,12 +56,12 @@ let drawCharts = (workbook) => {
 
 	var totPies = dosisStats.map(stat => {
 		var [dose, idDose] = stat
-		var lastYearData = data.filter(row => row["År"] === new Date().getFullYear().toString())
-		var latestWeek = lastYearData.map(row => row.Vecka).sort().pop()
+		var lastYearData = data.filter(row => row["År"] === new Date().getFullYear())
+		var latestWeek = Math.max(...lastYearData.map(row => numberCleaner(row.Vecka)))
 		selector.latest_week = latestWeek
 		var lastWeekData = lastYearData.filter(row => row.Vecka === latestWeek && row.Region === selector.selected_region)
 		var lastWeekDoseData = lastWeekData.filter(row => row.Dosnummer === dose)
-		var ysDoseRelative = lastWeekDoseData.map(row => row[`Andel vaccinerade`])
+		var ysDoseRelative = lastWeekDoseData.map(row => numberCleaner(row[`Andel vaccinerade`]))
 		var ysDoseAbsolute = lastWeekDoseData.map(row => row[`Antal vaccinerade`])
 		var labels = ["Tagit " + dose, "Ej tagit " + dose]
 		var relativeVaccinations = ysDoseRelative[0]
@@ -97,8 +106,8 @@ let drawCharts = (workbook) => {
 	
 	var subsetData = data.filter(row => row.Region === selector.selected_region)
 	var xs = subsetData.filter(row => row.Dosnummer === "Dos 1").map(row => parseInt(row.Vecka, 10))
-	var ysDos1 = subsetData.filter(row => row.Dosnummer === "Dos 1").map(row => row[`${selector.selected_measure} vaccinerade`] * scaling)
-	var ysDos2 = subsetData.filter(row => row.Dosnummer === "Dos 2").map(row => row[`${selector.selected_measure} vaccinerade`] * scaling)
+	var ysDos1 = subsetData.filter(row => row.Dosnummer === "Dos 1").map(row => numberCleaner(row[`${selector.selected_measure} vaccinerade`]) * scaling)
+	var ysDos2 = subsetData.filter(row => row.Dosnummer === "Dos 2").map(row => numberCleaner(row[`${selector.selected_measure} vaccinerade`]) * scaling)
 	var progressionChart = new Chart(document.getElementById('main_line_chart').getContext('2d'), {
 		type: 'line',
 		data: {
@@ -159,8 +168,8 @@ let drawCharts = (workbook) => {
 	subsetData = subsetData.filter(row => row.Dosnummer === selector.selected_dose)
 	
 	var periodWeeks = Math.min(selector.selected_period, subsetData.length - 1)
-	var currentPercentage = subsetData[subsetData.length-1]["Andel vaccinerade"]
-	var previousPercentage = subsetData[subsetData.length-1-periodWeeks]["Andel vaccinerade"]
+	var currentPercentage = parseFloat(subsetData[subsetData.length-1]["Andel vaccinerade"].replace(",", "."))
+	var previousPercentage = parseFloat(subsetData[subsetData.length-1-periodWeeks]["Andel vaccinerade"].replace(",", "."))
 
 	var derivative = (currentPercentage-previousPercentage)/periodWeeks
 	var percentageMissing = (1.0 - currentPercentage)
@@ -192,13 +201,13 @@ let drawCharts = (workbook) => {
 	}
 	
 	if(selector.selected_scope === "Region") {
-		var lastYearData = data.filter(row => row["År"] === new Date().getFullYear().toString())
+		var lastYearData = data.filter(row => row["År"] === new Date().getFullYear())
 		var latestWeek = lastYearData.map(row => row.Vecka).sort().pop()
 		var lastWeekData = lastYearData.filter(row => row.Vecka === latestWeek)
 									.sort((a,b) => b[`${selector.selected_measure} vaccinerade`] - a[`${selector.selected_measure} vaccinerade`])
 		var allRegions = lastWeekData.map(row => row.Region).filter((v, i, a) => a.indexOf(v) === i)
-		var ysDos1 = lastWeekData.filter(row => row.Dosnummer === "Dos 1").map(row => row[`${selector.selected_measure} vaccinerade`]*scaling)
-		var ysDos2 = lastWeekData.filter(row => row.Dosnummer === "Dos 2").map(row => row[`${selector.selected_measure} vaccinerade`]*scaling)
+		var ysDos1 = lastWeekData.filter(row => row.Dosnummer === "Dos 1").map(row => numberCleaner(row[`${selector.selected_measure} vaccinerade`])*scaling)
+		var ysDos2 = lastWeekData.filter(row => row.Dosnummer === "Dos 2").map(row => numberCleaner(row[`${selector.selected_measure} vaccinerade`])*scaling)
 		
 	}
 	else {
