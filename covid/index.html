@@ -109,7 +109,7 @@
 				  </select> av <select v-on:change="onChange($event)" v-model="selected_dose"><option v-for="option in dose_options" v-bind:value="option.value">
 					{{ option.text }}
 				  </option>
-				</select> bibehålls ({{ (vaccination_rate*100).toFixed(2) }}% per vecka), så beräknas alla över 18 år i {{ selected_region.replaceAll("|", "") }} vara vaccinerade <b>{{ completed_date }}</b>.</p>
+				</select> bibehålls ({{ (vaccination_rate*100).toFixed(2) }}% per vecka), så beräknas alla födda år 2009 eller tidigare i {{ selected_region.replaceAll("|", "") }} vara vaccinerade <b>{{ completed_date }}</b>.</p>
 				<!-- <p>För att nå målet, att ha vaccinerat alla i {{ selected_region.replaceAll("|", "") }} till midsommar, måste vaccinations-takten {{ (supposed_rate <= vaccination_rate) ? 'stanna över' : 'ökas till' }} {{ (supposed_rate*100).toFixed(2) }}% per vecka.</p>
 				<p v-if="supposed_rate > vaccination_rate">
 					Det innebär en ökning med {{ (supposed_rate / vaccination_rate).toFixed(1) }} gånger nuvarande takt.
@@ -177,7 +177,7 @@
 
 					Överföringen från journalsystemen till NVR sker automatiskt (hel- eller halvautomatiskt).
 
-					Andelar beräknas baserat på SCB:s Befolkningsstatistik över folkmängd den 31 december 2020 för personer 18 år eller äldre.</small>
+					Andelar beräknas baserat på SCB:s Befolkningsstatistik över folkmängd den 31 december 2020 för födda år 2009 eller tidigare.</small>
 				</p>
 				<br><br>
 					<p>Skapad av <a href="https://dettmar.se">J. Dettmar</a></p>
