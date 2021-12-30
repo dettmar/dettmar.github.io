@@ -199,12 +199,11 @@ let drawCharts = (workbook) => {
 			
 		selector.region_options = [{ text: 'Sverige', value: "| Sverige |" }, ...restRegions]
 	}
-	
 	if(selector.selected_scope === "Region") {
 		var lastYearData = data.filter(row => row["År"] === new Date().getFullYear())
-		var latestWeek = lastYearData.map(row => row.Vecka).sort().pop()
+		var latestWeek = Math.max(...lastYearData.map(row => numberCleaner(row.Vecka)))
 		var lastWeekData = lastYearData.filter(row => row.Vecka === latestWeek)
-									.sort((a,b) => b[`${selector.selected_measure} vaccinerade`] - a[`${selector.selected_measure} vaccinerade`])
+									.sort((a,b) => numberCleaner(b[`${selector.selected_measure} vaccinerade`]) - numberCleaner(a[`${selector.selected_measure} vaccinerade`]))
 		var allRegions = lastWeekData.map(row => row.Region).filter((v, i, a) => a.indexOf(v) === i)
 		var ysDos1 = lastWeekData.filter(row => row.Dosnummer === "Dos 1").map(row => numberCleaner(row[`${selector.selected_measure} vaccinerade`])*scaling)
 		var ysDos2 = lastWeekData.filter(row => row.Dosnummer === "Dos 2").map(row => numberCleaner(row[`${selector.selected_measure} vaccinerade`])*scaling)
