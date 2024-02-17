@@ -10,30 +10,23 @@
 		<meta property="og:url" content="http://dettmar.se/" />
 		<meta property="og:title" content="Johan Dettmar | Data Scientist" />
 		<meta property="og:site_name" content="Johan Dettmar | Data Scientist" />
+		<link rel="preconnect" href="https://rsms.me/">
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 		<style>
-			/* @import url('https://rsms.me/inter/inter.css'); */
-			@font-face {
-			font-family: 'Inter var';
-			font-weight: 100 900;
-			font-style: normal;
-			font-named-instance: 'Regular';
-			font-display: swap;
-			src: url("https://rsms.me/inter/font-files/Inter-roman.var.woff2?3.13") format("woff2");
+			:root {
+			  font-family: Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;;
+			  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
 			}
-
-
-			html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
 			@supports (font-variation-settings: normal) {
-				html { font-family: 'Inter var', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
+			  :root { font-family: InterVariable, -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
 			}
+
 			html, body {
 				background: #eee;
 				color: #222;
 				margin: 0;
 				padding: 0;
 				line-height: 1.5em;
-				/* -webkit-font-smoothing: antialiased;
-				-moz-osx-font-smoothing: grayscale; */
 			}
 			.wrapper {
 				display: flex;
@@ -128,7 +121,7 @@
 			<section>
 				<h2>Work experience</h2>
 				<article>
-					<strong>Senior Machine Learning Engineer (NLP), 2024-.</strong>
+					<strong>Senior Machine Learning Engineer, 2024-.</strong>
 					<p>Merantix Momentum, Berlin</p>
 					<strong>Data Scientist, 2021-2024.</strong>
 					<p>JustWatch, Berlin</p>
@@ -168,7 +161,7 @@
 				<article>
 					Selected accomplishments and projects that I've been involved in:
 					<ul>
-						<li>Top 1% <a href="http://stackoverflow.com/users/704371/johan-dettmar" target="_blank" rel="noreferrer">StackOverflow</a> contributor, 2015-2021</li>
+						<li>Top 1% <a href="http://stackoverflow.com/users/704371/johan-dettmar" target="_blank" rel="noreferrer">StackOverflow</a> contributor, 2015-<span class="year">2024</span></li>
 						<li>Winner <a href="https://business.esa.int/news/kick-start-activities-new-funding-opportunity-for-innovative-applications-ideas" target="_blank" rel="noreferrer">European Space Agency's Kickstart Activity</a> <a href="https://dida.do/news/dida-is-chosen-for-esa-kickstart-project-4d-urban-insights" target="_blank" rel="noreferrer">"AI for Social Impact"</a>, 2019</li>
 						<li>Awarded <a href="https://healthhackathon17-berlin.sparkboard.com/project/5a21ccd19c7a9b0400384394" target="_blanket">1st place</a> <a href="https://hacking-health.org/berlin-old/bhi-hackathon2017/" target="_blank" rel="noreferrer">Berlin Health Innovations Hackathon</a>, 2017</li>
 						<li>Co-creator of <a href="http://heavymetaltennis.com/" target="_blank" rel="noreferrer">HMTT</a>, Awarded Apple App Store Best New Game, 2016</li>
@@ -207,7 +200,7 @@
 			}
 			$(".email").map(link => link.href = atob("bWFpbHRvOmRldHRtYXJAZ21haWwuY29t"))
 			$("a").map(link => link.onclick = trackClick)
-			$(".year")[0].innerHTML = (new Date).getFullYear()
+			$(".year").map(tag => tag.innerHTML = (new Date).getFullYear())
 		</script>
 	</body>
 </html>
